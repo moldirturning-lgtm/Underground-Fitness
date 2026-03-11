@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Отработка возражений</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c0c0f;
+  --surface: #16161c;
+  --surface2: #1e1e28;
+  --border: #2a2a38;
+  --red: #e53935;
+  --gold: #c9a84c;
+  --blue: #3b6fd4;
+  --green: #2e9e6b;
+  --white: #f0eff4;
+  --muted: #6b6b80;
+  --text: #c8c7d4;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; }
+.logo span { color: var(--red); }
+.header-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* LAYOUT */
+.app { display: flex; height: calc(100vh - 57px); }
+
+/* SIDEBAR */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 12px;
+}
+.sidebar-title {
+  font-size: 9px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--muted);
+  padding: 0 10px 12px;
+}
+.nav-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 11px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 3px;
+  transition: all 0.18s;
+  color: var(--muted);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.nav-btn:hover { background: var(--surface2); color: var(--white); }
+.nav-btn.active { background: var(--surface2); color: var(--white); }
+.nav-btn.active .nav-dot { opacity: 1; }
+.nav-icon { font-size: 18px; flex-shrink: 0; }
+.nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red); margin-left: auto; flex-shrink: 0;
+  opacity: 0;
+}
+
+.sidebar-divider {
+  height: 1px; background: var(--border);
+  margin: 14px 10px;
+}
+.sidebar-section {
+  font-size: 9px; font-weight: 800; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--muted);
+  padding: 8px 10px 6px;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 48px;
+}
+
+.page { display: none; animation: fadeIn 0.25s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* PAGE HEADER */
+.page-header { margin-bottom: 36px; }
+.page-eyebrow {
+  font-size: 10px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px; letter-spacing: 1px; line-height: 1;
+  margin-bottom: 10px;
+}
+.page-desc { font-size: 14px; color: var(--muted); max-width: 560px; line-height: 1.6; }
+
+/* PRINCIPLE BOX */
+.principle {
+  background: var(--surface2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin-bottom: 32px;
+}
+.principle-label {
+  font-size: 9px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+}
+.principle-text { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+/* TABS for sub-variants */
+.subtabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+.subtab {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 12px; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.subtab:hover { color: var(--white); border-color: #444; }
+.subtab.active { background: var(--red); border-color: var(--red); color: white; }
+
+.subpage { display: none; }
+.subpage.active { display: block; }
+
+/* DIALOG */
+.dialog { margin-bottom: 12px; }
+.dialog-line {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.dialog-line.client { justify-content: flex-start; }
+.dialog-line.manager { justify-content: flex-start; }
+
+.bubble {
+  max-width: 78%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  position: relative;
+}
+.client .bubble {
+  background: var(--surface2);
+  color: #aaa9bb;
+  border-radius: 4px 12px 12px 12px;
+  border: 1px solid var(--border);
+}
+.manager .bubble {
+  background: #1a2640;
+  color: var(--text);
+  border-radius: 12px 4px 12px 12px;
+  border: 1px solid #2a3a58;
+}
+.manager .bubble em {
+  font-style: normal;
+  color: #7eb8f7;
+  font-weight: 700;
+}
+.client .bubble em {
+  font-style: normal;
+  color: #e8857a;
+  font-weight: 700;
+}
+
+.speaker {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; flex-shrink: 0; margin-top: 14px;
+  width: 32px; text-align: center;
+}
+.client .speaker { color: var(--muted); }
+.manager .speaker { color: #4a7fc1; }
+
+/* STEP LABELS */
+.step-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 4px 12px;
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 14px; margin-top: 8px;
+}
+.step-badge span { color: var(--red); }
+
+/* TIP */
+.tip-box {
+  background: #0d1f14;
+  border: 1px solid #1e4a2a;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 20px;
+  font-size: 13px;
+  color: #7dcc9a;
+  line-height: 1.6;
+}
+.tip-box strong { color: #4ade80; }
+
+/* HOMEPAGE */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.home-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.home-card:hover {
+  background: var(--surface2);
+  border-color: #3a3a50;
+  transform: translateY(-2px);
+}
+.home-card-icon { font-size: 28px; margin-bottom: 10px; }
+.home-card-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.home-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.rule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+.rule-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.rule-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; color: var(--red); line-height: 1;
+  margin-bottom: 8px;
+}
+.rule-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.rule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { padding: 24px 20px; }
+  .page-title { font-size: 36px; }
+  .rule-grid { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">UNDERGROUND <span>FITNESS</span></div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="edit-status" style="display:none;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c9a84c;">✏️ РЕЖИМ РЕДАКТИРОВАНИЯ</div>
+    <div class="header-tag">Правило трёх Н</div>
+    <button id="edit-btn" onclick="toggleEdit()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:6px;cursor:pointer;">✏️ Редактировать</button>
+    <button id="save-btn" onclick="saveEdit()" style="display:none;background:#2e9e6b;border:none;color:white;font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:6px;cursor:pointer;">💾 Сохранить файл</button>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-title">Навигация</div>
+
+    <button class="nav-btn active" onclick="showPage('home', this)">
+      <span class="nav-icon">🏠</span> Главная
+      <span class="nav-dot"></span>
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Классические</div>
+
+    <button class="nav-btn" onclick="showPage('dorogo', this)">
+      <span class="nav-icon">💰</span> Дорого
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('podumau', this)">
+      <span class="nav-icon">🤔</span> Подумаю
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('vremya', this)">
+      <span class="nav-icon">⏰</span> Нет времени
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('obsudit', this)">
+      <span class="nav-icon">👥</span> Обсудить с кем-то
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('rassrochka', this)">
+      <span class="nav-icon">💳</span> Против рассрочки
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('sam', this)">
+      <span class="nav-icon">✋</span> Сам решу
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('mesyac', this)">
+      <span class="nav-icon">📅</span> На месяц попробовать
+      <span class="nav-dot"></span>
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">Сложные</div>
+
+    <button class="nav-btn" onclick="showPage('negativ', this)">
+      <span class="nav-icon">😤</span> Негативный опыт
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('nedoverie', this)">
+      <span class="nav-icon">🚫</span> Недоверие к результату
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('med', this)">
+      <span class="nav-icon">🏥</span> Медицинские страхи
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('zal', this)">
+      <span class="nav-icon">🏋️</span> Переполненность зала
+      <span class="nav-dot"></span>
+    </button>
+    <button class="nav-btn" onclick="showPage('len', this)">
+      <span class="nav-icon">😴</span> Я ленивый
+      <span class="nav-dot"></span>
+    </button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HOME -->
+    <div class="page active" id="home">
+      <div class="page-header">
+        <div class="page-eyebrow">Справочник менеджера</div>
+        <div class="page-title">ПРАВИЛО<br>ТРЁХ Н</div>
+        <div class="page-desc">Три отказа — не повод сдаться. Каждый ответ клиента — это сигнал, а не финал. Выбери возражение слева и отработай по сценарию.</div>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">1</div>
+          <div class="rule-title">Присоединение</div>
+          <div class="rule-desc">Не спорим, не давим. Показываем что услышали клиента.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">2</div>
+          <div class="rule-title">Вопрос или аргумент</div>
+          <div class="rule-desc">Копаем глубже. Ищем настоящую причину возражения.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">3</div>
+          <div class="rule-title">Последний козырь</div>
+          <div class="rule-desc">Конкретное предложение с ограничением. После — отпускаем.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-title" style="padding-bottom:14px">Выбери возражение</div>
+      <div class="home-grid">
+        <div class="home-card" onclick="showPageById('dorogo')"><div class="home-card-icon">💰</div><div class="home-card-title">Дорого</div><div class="home-card-desc">Не понимает ценность или неудобно по деньгам</div></div>
+        <div class="home-card" onclick="showPageById('podumau')"><div class="home-card-icon">🤔</div><div class="home-card-title">Подумаю</div><div class="home-card-desc">Вежливый способ уйти без решения</div></div>
+        <div class="home-card" onclick="showPageById('vremya')"><div class="home-card-icon">⏰</div><div class="home-card-title">Нет времени</div><div class="home-card-desc">Вопрос приоритетов, а не реального времени</div></div>
+        <div class="home-card" onclick="showPageById('obsudit')"><div class="home-card-icon">👥</div><div class="home-card-title">Обсудить с кем-то</div><div class="home-card-desc">Нужно одобрение близкого человека</div></div>
+        <div class="home-card" onclick="showPageById('rassrochka')"><div class="home-card-icon">💳</div><div class="home-card-title">Против рассрочки</div><div class="home-card-desc">Не хочет кредитных обязательств</div></div>
+        <div class="home-card" onclick="showPageById('sam')"><div class="home-card-icon">✋</div><div class="home-card-title">Сам решу</div><div class="home-card-desc">Клиент закрывается, давить бесполезно</div></div>
+        <div class="home-card" onclick="showPageById('mesyac')"><div class="home-card-icon">📅</div><div class="home-card-title">На месяц</div><div class="home-card-desc">Хочет минимальное обязательство</div></div>
+        <div class="home-card" onclick="showPageById('negativ')"><div class="home-card-icon">😤</div><div class="home-card-title">Негативный опыт</div><div class="home-card-desc">Уже был в клубе — что-то не понравилось</div></div>
+        <div class="home-card" onclick="showPageById('nedoverie')"><div class="home-card-icon">🚫</div><div class="home-card-title">Недоверие к результату</div><div class="home-card-desc">Пробовал — не помогло</div></div>
+        <div class="home-card" onclick="showPageById('med')"><div class="home-card-icon">🏥</div><div class="home-card-title">Медицинские страхи</div><div class="home-card-desc">Беспокоится о здоровье</div></div>
+        <div class="home-card" onclick="showPageById('zal')"><div class="home-card-icon">🏋️</div><div class="home-card-title">Переполненность</div><div class="home-card-desc">Слышал или видел много людей в зале</div></div>
+        <div class="home-card" onclick="showPageById('len')"><div class="home-card-icon">😴</div><div class="home-card-title">Я ленивый</div><div class="home-card-desc">Не верит в себя — самое честное возражение</div></div>
+      </div>
+    </div>
+
+    <!-- ДОРОГО -->
+    <div class="page" id="dorogo">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">ДОРОГО</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">«Дорого» почти никогда не значит «нет денег». Чаще это «не понимаю за что плачу». Задача — выяснить что именно дорого, и перевести в ценность через конкретные цифры.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну не знаю, дороговато как-то...</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понимаю. А дорого — это прямо сейчас неудобно по деньгам, или в целом кажется много за фитнес?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну в целом, 100 тысяч за зал — серьёзно.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Смотрите, давайте посчитаем. 100 тысяч на год — это <em>8 500 в месяц</em>. В месяце в среднем 12 тренировок. Выходит <em>около 700 тенге за тренировку</em>. Стакан кофе дороже. При этом — тренеры, оборудование, групповые — всё включено.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну да, если так смотреть...</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Плюс у нас есть рассрочка — разбиваем на 3 месяца, не нужно сразу всё отдавать. И первая тренировка <em>бесплатно</em> — приходите, почувствуете клуб своими ногами, потом решите.</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Не снижай цену первым. Сначала покажи ценность через математику — потом рассрочка как мягкий выход.</div>
+    </div>
+
+    <!-- ПОДУМАЮ -->
+    <div class="page" id="podumau">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">ПОДУМАЮ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">«Подумаю» — это вежливый способ уйти. За этим всегда стоит что-то конкретное: цена, сомнение, нужно с кем-то посоветоваться. Задача — вытащить это наружу, не дать уйти в никуда.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ладно, я подумаю наверное.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Хорошо. Скажите, а что именно хотите обдумать? Может, что-то не так объяснил или остались вопросы — давайте сразу закроем.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну просто хочу ещё раз всё взвесить.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понял. Чтобы не взвешивать вслепую — приходите на <em>бесплатную тренировку</em>. Никакого давления, просто посмотрите зал, пообщаетесь с тренером. Час — и уже будет что взвешивать.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну не знаю...</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Вот что скажу честно — у нас сейчас акция, она заканчивается <em>в пятницу</em>. После цена будет выше на 15%. Не тороплю, но чтобы вы знали. Когда вам удобно в ближайшие дни?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Дедлайн называй в конце — не в начале. Сначала дай причину прийти, потом ограничение.</div>
+    </div>
+
+    <!-- НЕТ ВРЕМЕНИ -->
+    <div class="page" id="vremya">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">НЕТ ВРЕМЕНИ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Время — это вопрос приоритетов. Задача — не спорить, а найти хоть одно реальное окно в расписании и зацепиться за него.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Хотел бы, но времени совсем нет, загружен сильно.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понимаю, у большинства наших клиентов такая же история. А в какое время обычно чуть свободнее — утром или вечером?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну вечером наверное, после 7.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Отлично, у нас до 23:00 работаем. Тренировка — <em>45-50 минут</em>. Три раза в неделю. Это всё. Никто не требует каждый день.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну три раза — это тоже надо выкроить...</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Давайте вот что сделаем — запишу вас на <em>одну тренировку</em> в удобный день вечером. Придёте, потренируетесь, посмотрите как это по времени вписывается. Один раз точно найдётся, правда?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Не говори «найдите время» — это звучит как упрёк. Помоги найти конкретный слот.</div>
+    </div>
+
+    <!-- ОБСУДИТЬ -->
+    <div class="page" id="obsudit">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">ОБСУДИТЬ<br>С КЕМ-ТО</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Уважаем, не давим. Задача — не дать этому разговору уйти в пустоту. Либо помогаем организовать встречу, либо даём информацию для передачи, либо дедлайн.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Мне нужно с мужем посоветоваться сначала.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Конечно, это нормально. А муж в принципе поддерживает идею с фитнесом, или есть сомнения с его стороны?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Да нет, он не против, просто хочу чтобы он знал.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понял. Тогда так — я сброшу вам на WhatsApp всю информацию: условия, цены, что входит. Покажете мужу, <em>всё будет перед глазами</em>, не нужно ничего пересказывать.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну хорошо.</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">И ещё момент — если решите до пятницы, у нас сейчас акция. <em>После неё цена другая.</em> Просто имейте в виду. Договорились?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Если муж/жена против фитнеса в принципе — предложи прийти вместе. Вдвоём — скидка, и возражение снимается на месте.</div>
+    </div>
+
+    <!-- РАССРОЧКА -->
+    <div class="page" id="rassrochka">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">ПРОТИВ<br>РАССРОЧКИ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Не навязываем. Рассрочка — это инструмент, а не обязаловка. Убираем без лишних слов и превращаем в плюс — при единовременной оплате скидка больше.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Не хочу никакие рассрочки, не люблю это.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Всё понял, никаких проблем — оплатим сразу. Картой, наличными, переводом — любой вариант. Рассрочка просто как опция была.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну окей, тогда сколько выходит сразу?</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">За годовой — [сумма]. Кстати, при единовременной оплате скидка <em>больше</em>, чем при помесячной. Так что вы ещё и в плюсе. Оформляем?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Это самое простое возражение. Не спорь — просто убери рассрочку и закрывай сделку.</div>
+    </div>
+
+    <!-- САМ РЕШУ -->
+    <div class="page" id="sam">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">САМ РЕШУ,<br>САМ НАПИШУ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Клиент закрывается. Давить — только хуже. Задача — оставить дверь открытой, дать мягкий дедлайн и попробовать выяснить настоящую причину.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ладно, я сам разберусь, если что — напишу.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Хорошо, не вопрос. Я скину контакт в WhatsApp — напишете когда будете готовы.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Только один момент — акция, которую называл, <em>до пятницы</em>. После цена вырастет. Не тороплю, просто чтобы потом не было сюрприза.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">...<em>(молчание)</em></div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Если что-то смутило в разговоре — скажите честно, не обижусь. Иногда просто что-то не так объяснил.</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> После третьего «нет» — отпускаем тепло. Клиент должен уйти с хорошим впечатлением. Он может вернуться или привести друга.</div>
+    </div>
+
+    <!-- МЕСЯЦ -->
+    <div class="page" id="mesyac">
+      <div class="page-header">
+        <div class="page-eyebrow">Возражение</div>
+        <div class="page-title">НА МЕСЯЦ<br>ПОПРОБОВАТЬ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Месяц — это вход, не отказ. Задача — честно объяснить почему месяц не даст результата, и предложить апгрейд с конкретной выгодой или гарантией.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Давайте я сначала на месяц возьму, попробую.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Месяц есть, оформим. Но скажу честно — за месяц результата не увидите. Тело первые 3-4 недели просто адаптируется, <em>это физиология</em>. Многие бросают именно тогда, когда ещё чуть-чуть — и пошло бы.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну я просто хочу понять подойдёт ли мне вообще.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Для этого у нас как раз есть <em>бесплатная тренировка</em> — приходите, позанимаетесь, поймёте нравится или нет. Это честнее чем месяц платить и не понять.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну ладно, а если всё-таки месяц?</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Смотрите — месяц стоит [сумма]. Три месяца — [сумма]. Разница [X] тысяч, но за три месяца вы <em>реально увидите изменения</em>. Если после первых двух недель почувствуете что не ваше — я лично переоформлю и верну разницу. По рукам?</div></div>
+      </div>
+    </div>
+
+    <!-- НЕГАТИВНЫЙ ОПЫТ -->
+    <div class="page" id="negativ">
+      <div class="page-header">
+        <div class="page-eyebrow">Сложное возражение</div>
+        <div class="page-title">НЕГАТИВНЫЙ<br>ОПЫТ</div>
+        <div class="page-desc">Клиент уже был в клубе. Что-то не понравилось. Выбери ситуацию:</div>
+      </div>
+      <div class="subtabs">
+        <button class="subtab active" onclick="showSub('negativ', 'perepolnen', this)">Зал был переполнен</button>
+        <button class="subtab" onclick="showSub('negativ', 'trenery', this)">Тренеры не уделяли внимания</button>
+        <button class="subtab" onclick="showSub('negativ', 'nehodil', this)">Купил и не ходил</button>
+      </div>
+
+      <div class="subpage active" id="negativ-perepolnen">
+        <div class="principle"><div class="principle-label">⚡ Принцип</div><div class="principle-text">Не оправдываемся и не спорим. Признаём — клиент должен почувствовать что его услышали. Потом показываем что конкретно изменилось.</div></div>
+        <div class="step-badge">Н <span>1</span></div>
+        <div class="dialog">
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Я у вас занималась раньше, зал был забит, вообще некомфортно было.</div></div>
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Слышу вас, и не буду говорить что этого не было. <em>Было, знаю.</em> С тех пор расширили зал и изменили расписание. Скажите, в какое время вы обычно приходили?</div></div>
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну вечером, после работы.</div></div>
+        </div>
+        <div class="step-badge">Н <span>2</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Вечером 19-21 — да, самый пик. Но сейчас даже в пик заметно свободнее. Давайте вот что — приходите на <em>бесплатную тренировку</em> именно в то время когда вам удобно. Сами увидите как сейчас, не на слово же мне верить.</div></div>
+        </div>
+        <div class="tip-box"><strong>Совет:</strong> Не защищай клуб — дай клиенту убедиться самому. Бесплатная тренировка здесь работает лучше любых слов.</div>
+      </div>
+
+      <div class="subpage" id="negativ-trenery">
+        <div class="principle"><div class="principle-label">⚡ Принцип</div><div class="principle-text">Согласиться — это не слабость. Тренер который не работает с клиентом — это плохо. Признай и предложи проверить лично.</div></div>
+        <div class="step-badge">Н <span>1</span></div>
+        <div class="dialog">
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Тренеры у вас тогда вообще не подходили, занималась сама по себе.</div></div>
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Это неправильно, согласен. Тренер который не работает с клиентом — это не тренер. У нас сейчас другой подход, <em>часть команды обновилась</em>. Но лучше не рассказывать — давайте запишу на вводную тренировку с конкретным тренером.</div></div>
+        </div>
+        <div class="step-badge">Н <span>2</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Час один на один, <em>бесплатно</em>. Если после скажете что ничего не изменилось — я сам скажу вам не брать абонемент.</div></div>
+        </div>
+        <div class="tip-box"><strong>Совет:</strong> Когда говоришь «я сам скажу не брать» — это сильно повышает доверие. Клиент понимает что ты не просто продаёшь.</div>
+      </div>
+
+      <div class="subpage" id="negativ-nehodil">
+        <div class="principle"><div class="principle-label">⚡ Принцип</div><div class="principle-text">Не осуждаем. Выясняем почему — и предлагаем структуру которой раньше не было.</div></div>
+        <div class="step-badge">Н <span>1</span></div>
+        <div class="dialog">
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Был у вас уже, взял абонемент и ходил раза три наверное.</div></div>
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понял. А почему перестали ходить — жизнь закрутила, или что-то в клубе не устроило?</div></div>
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну просто не пошло как-то, мотивации не было.</div></div>
+        </div>
+        <div class="step-badge">Н <span>2</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Это честно. Абонемент сам по себе мотивацию не даёт — <em>правда</em>. Поэтому сейчас делаем иначе: при оформлении сразу записываем на первые тренировки с тренером. Не когда хочется, а <em>конкретные дни и время</em>. Первые 2-3 недели тренер ведёт, потом сами. Привычка формируется именно в этот период.</div></div>
+        </div>
+        <div class="step-badge">Н <span>3</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Попробуем так?</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- НЕДОВЕРИЕ -->
+    <div class="page" id="nedoverie">
+      <div class="page-header">
+        <div class="page-eyebrow">Сложное возражение</div>
+        <div class="page-title">НЕДОВЕРИЕ<br>К РЕЗУЛЬТАТУ</div>
+        <div class="page-desc">Клиент уже пробовал — не помогло. Выбери ситуацию:</div>
+      </div>
+      <div class="subtabs">
+        <button class="subtab active" onclick="showSub('nedoverie', 'proboval', this)">Пробовал худеть — не помогло</button>
+        <button class="subtab" onclick="showSub('nedoverie', 'abony', this)">Покупала абонементы и не ходила</button>
+      </div>
+
+      <div class="subpage active" id="nedoverie-proboval">
+        <div class="principle"><div class="principle-label">⚡ Принцип</div><div class="principle-text">Не обещаем золотые горы. Клиент уже слышал обещания. Говорим честно и конкретно — и выясняем чего не было раньше.</div></div>
+        <div class="step-badge">Н <span>1</span></div>
+        <div class="dialog">
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Я столько всего пробовала — диеты, залы, ничего не работает.</div></div>
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Верю. И не буду говорить что у нас какая-то магия. Скажите — когда пробовали, был кто-то кто составлял программу <em>конкретно под вас</em>, контролировал питание, следил за прогрессом?</div></div>
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну нет, в общем-то сама разбиралась.</div></div>
+        </div>
+        <div class="step-badge">Н <span>2</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Вот в этом и дело. Сама — это лотерея. Можно угадать, а можно годами делать что-то не то и не понимать почему нет результата. Наш тренер работает с <em>вашей конкретной ситуацией</em> — не по шаблону.</div></div>
+        </div>
+        <div class="step-badge">Н <span>3</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Давайте просто придёте на первую тренировку — тренер посмотрит на вашу подготовку и <em>честно скажет</em> что реально, а что нет. Без продаж.</div></div>
+        </div>
+      </div>
+
+      <div class="subpage" id="nedoverie-abony">
+        <div class="principle"><div class="principle-label">⚡ Принцип</div><div class="principle-text">Клиент не верит в себя. Не переубеждаем словами — снижаем барьер до минимума и даём маленькую победу.</div></div>
+        <div class="step-badge">Н <span>1</span></div>
+        <div class="dialog">
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Я знаю себя, куплю и опять не пойду.</div></div>
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Хорошо что говорите честно, это уже половина дела. А почему не ходили — далеко, не интересно, или просто не было системы?</div></div>
+          <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Просто не было привычки наверное.</div></div>
+        </div>
+        <div class="step-badge">Н <span>2</span></div>
+        <div class="dialog">
+          <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Привычка не появляется сама — <em>нужна точка входа</em>. Не берите сразу годовой. Начнём с малого: запишитесь на бесплатную тренировку, придите один раз. Если зацепит — поговорим об абонементе.</div></div>
+        </div>
+        <div class="tip-box"><strong>Совет:</strong> Клиент который говорит «я знаю что не пойду» — это не потерянный клиент. Это клиент которому нужно больше доверия. Один раз — минимальный барьер.</div>
+      </div>
+    </div>
+
+    <!-- МЕД -->
+    <div class="page" id="med">
+      <div class="page-header">
+        <div class="page-eyebrow">Сложное возражение</div>
+        <div class="page-title">МЕДИЦИНСКИЕ<br>СТРАХИ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Не давим и не обесцениваем. Здоровье — серьёзно. Мы не против врача — мы за. Показываем что тренировки под контролем безопаснее чем самостоятельно.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Мне нужно сначала с врачом посоветоваться, у меня спина болит.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Правильно делаете, что советуетесь. <em>Серьёзно.</em> Мы сами всегда говорим — если есть проблемы со здоровьем, сначала врач. Что именно со спиной, если не секрет?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Остеохондроз, периодически прихватывает.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Понял. Со спиной мы работаем — есть тренеры с опытом именно с такими случаями. Но сначала врач — пусть скажет что можно, что нельзя. После тренер составит программу <em>с учётом ограничений</em>. Вы к врачу в ближайшее время идёте?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Да, на следующей неделе.</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Отлично. Давайте я запишу ваш номер и <em>напомню через неделю</em>. Сходите к врачу, получите добро — и придёте на бесплатную тренировку. Договорились?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Обязательно бери номер и сам звони через неделю. Без follow-up этот клиент потеряется.</div>
+    </div>
+
+    <!-- ЗАЛ -->
+    <div class="page" id="zal">
+      <div class="page-header">
+        <div class="page-eyebrow">Сложное возражение</div>
+        <div class="page-title">ПЕРЕПОЛНЕННОСТЬ<br>ЗАЛА</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Не отрицаем пик — это выглядит как ложь. Честно говорим про загруженное время и предлагаем клиенту убедиться самому.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Слышала что у вас всегда народу много, не протолкнуться.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Скажу честно — в час пик да, оживлённо. Это живой клуб, люди ходят. Но в 7 утра, в обед и после 21:00 — <em>зал полупустой</em>. Зависит от времени.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну я работаю до 18, раньше 19 не смогу.</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">19-21 — пик, не скрою. Но это не значит что нет места — просто людей больше. <em>Оборудования хватает.</em> Приходите на бесплатную тренировку в ваше время — сами оцените комфортно или нет.</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Если скажете что тесно — <em>я это приму.</em> Но сначала посмотрите своими глазами. Записываю вас на этой неделе?</div></div>
+      </div>
+    </div>
+
+    <!-- ЛЕНИВЫЙ -->
+    <div class="page" id="len">
+      <div class="page-header">
+        <div class="page-eyebrow">Сложное возражение</div>
+        <div class="page-title">Я ЛЕНИВЫЙ,<br>НЕ БУДУ ХОДИТЬ</div>
+      </div>
+      <div class="principle">
+        <div class="principle-label">⚡ Принцип</div>
+        <div class="principle-text">Самое честное возражение. Клиент не врёт — он реально в себя не верит. Не переубеждаем словами. Снижаем барьер до абсолютного минимума и даём маленькую победу.</div>
+      </div>
+      <div class="step-badge">Н <span>1</span></div>
+      <div class="dialog">
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Я вообще-то ленивый человек, куплю и не пойду — сам знаю.</div></div>
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Уважаю за честность, серьёзно. Скажите — а почему вообще сюда пришли, если знаете что не пойдёте?</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну хочется же что-то изменить...</div></div>
+      </div>
+      <div class="step-badge">Н <span>2</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Вот именно. <em>Желание есть</em> — лень просто перекрывает. Это нормально, с этим работают. Смотрите — не надо сразу брать абонемент. Приходите на <em>одну бесплатную тренировку</em>. Один раз. Не понравится — уйдёте и забудете.</div></div>
+        <div class="dialog-line client"><div class="speaker">К</div><div class="bubble">Ну один раз наверное да.</div></div>
+      </div>
+      <div class="step-badge">Н <span>3</span></div>
+      <div class="dialog">
+        <div class="dialog-line manager"><div class="speaker">М</div><div class="bubble">Вот и всё. <em>Один раз даже ленивый человек может.</em> Записываю. Когда удобно — в будни или выходные?</div></div>
+      </div>
+      <div class="tip-box"><strong>Совет:</strong> Не говори «вы точно будете ходить» — это звучит фальшиво. Задача сейчас — одна тренировка. Дальше тело само начнёт требовать.</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function showPageById(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) {
+      b.classList.add('active');
+    }
+  });
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function showSub(pageId, subId, btn) {
+  const page = document.getElementById(pageId);
+  page.querySelectorAll('.subpage').forEach(s => s.classList.remove('active'));
+  page.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
+  document.getElementById(pageId + '-' + subId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// EDIT MODE
+let editMode = false;
+const EDITABLE = '.bubble, .principle-text, .tip-box, .page-title, .page-desc, .home-card-title, .home-card-desc, .rule-title, .rule-desc, .subtab';
+
+function toggleEdit() {
+  editMode = !editMode;
+  const btn = document.getElementById('edit-btn');
+  const saveBtn = document.getElementById('save-btn');
+  const status = document.getElementById('edit-status');
+
+  if (editMode) {
+    document.querySelectorAll(EDITABLE).forEach(el => {
+      el.contentEditable = 'true';
+      el.style.outline = '1.5px dashed #c9a84c44';
+      el.style.borderRadius = '3px';
+      el.style.minWidth = '20px';
+    });
+    btn.textContent = '✕ Отменить';
+    btn.style.color = '#e53935';
+    btn.style.borderColor = '#e53935';
+    saveBtn.style.display = 'block';
+    status.style.display = 'block';
+  } else {
+    document.querySelectorAll(EDITABLE).forEach(el => {
+      el.contentEditable = 'false';
+      el.style.outline = '';
+      el.style.borderRadius = '';
+    });
+    btn.textContent = '✏️ Редактировать';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+    saveBtn.style.display = 'none';
+    status.style.display = 'none';
+  }
+}
+
+function saveEdit() {
+  // Turn off edit mode visually
+  editMode = false;
+  document.querySelectorAll(EDITABLE).forEach(el => {
+    el.contentEditable = 'false';
+    el.style.outline = '';
+    el.style.borderRadius = '';
+  });
+  document.getElementById('edit-btn').textContent = '✏️ Редактировать';
+  document.getElementById('edit-btn').style.color = '';
+  document.getElementById('edit-btn').style.borderColor = '';
+  document.getElementById('save-btn').style.display = 'none';
+  document.getElementById('edit-status').style.display = 'none';
+
+  // Save full page as HTML file
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'objections-updated.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
