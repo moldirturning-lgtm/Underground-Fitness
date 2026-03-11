@@ -5,211 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Underground Fitness — База знаний ОП</title>
   <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #11182d;
-      --panel2: #0f172a;
-      --line: #22304f;
-      --text: #e7eefc;
-      --muted: #9fb0d0;
-      --accent: #7dd3fc;
-      --accent2: #22c55e;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --chip: #16213d;
-      --shadow: 0 12px 30px rgba(0,0,0,.25);
+    :root{
+      --bg:#06080d;
+      --panel:#0d121c;
+      --panel2:#111827;
+      --panel3:#0b1220;
+      --line:#1f2a3d;
+      --text:#eef3ff;
+      --muted:#96a3bd;
+      --accent:#d7ff3f;
+      --accent2:#7dd3fc;
+      --danger:#fb7185;
+      --ok:#4ade80;
+      --shadow:0 20px 50px rgba(0,0,0,.28);
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background: radial-gradient(circle at top, rgba(163,230,53,.08), transparent 22%), linear-gradient(180deg, #060b16 0%, #0b1020 100%);
-      color: var(--text);
-      line-height: 1.55;
-    }
-    a { color: #9bdcff; }
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 290px 1fr;
-    }
-    .sidebar {
-      border-right: 1px solid var(--line);
-      background: rgba(8, 14, 29, .95);
-      padding: 22px 16px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-    }
-    .brand {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -.02em;
-      margin-bottom: 6px;
-    }
-    .subbrand {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-    .search {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 14px;
-      outline: none;
-      margin-bottom: 18px;
-    }
-    .search::placeholder { color: #89a0c8; }
-    .menu-title {
-      color: #7f93ba;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      font-size: 12px;
-      margin: 14px 8px 8px;
-    }
-    .menu button {
-      width: 100%;
-      text-align: left;
-      background: transparent;
-      color: #d9e6fb;
-      border: 0;
-      border-radius: 12px;
-      padding: 11px 12px;
-      cursor: pointer;
-      font-size: 14px;
-      margin: 4px 0;
-    }
-    .menu button:hover,
-    .menu button.active { background: var(--panel); }
-    .content {
-      padding: 26px;
-      max-width: 1250px;
-      width: 100%;
-      margin: 0 auto;
-    }
-    .hero {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(125,211,252,.12), rgba(34,197,94,.05));
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-    .hero h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.1; }
-    .hero p { margin: 0; color: var(--muted); max-width: 860px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .chip {
-      border: 1px solid var(--line);
-      background: var(--chip);
-      color: #dbe8fd;
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 13px;
-    }
-    .top-tabs, .sub-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 18px 0 16px;
-    }
-    .top-tabs button, .sub-tabs button {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .top-tabs button.active, .sub-tabs button.active {
-      background: linear-gradient(180deg, rgba(125,211,252,.18), rgba(34,197,94,.08));
-      border-color: rgba(125,211,252,.45);
-    }
-    .panel, .subpanel { display: none; }
-    .panel.active, .subpanel.active { display: block; }
-    h2 { font-size: 30px; margin: 10px 0 10px; }
-    .intro { color: var(--muted); margin-bottom: 16px; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px;
-    }
-    .card {
-      grid-column: span 12;
-      border: 1px solid var(--line);
-      background: var(--panel2);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .two .card { grid-column: span 6; }
-    .three .card { grid-column: span 4; }
-    .card h3 { margin: 0 0 10px; font-size: 20px; }
-    .card h4 { margin: 14px 0 8px; color: var(--accent); font-size: 16px; }
-    .muted { color: var(--muted); }
-    ul, ol { margin: 8px 0 0 20px; }
-    li { margin: 6px 0; }
-    .note, .example, .formula, .warning {
-      padding: 12px 14px;
-      border-radius: 14px;
-      margin-top: 12px;
-      font-size: 14px;
-    }
-    .note { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.18); }
-    .example { background: rgba(125,211,252,.08); border: 1px solid rgba(125,211,252,.18); }
-    .formula { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.18); }
-    .warning { background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.18); }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .stat {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .stat .n { font-weight: 800; font-size: 26px; }
-    .attach a {
-      display: inline-block;
-      margin-top: 8px;
-      text-decoration: none;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      padding: 10px 12px;
-      border-radius: 12px;
-    }
-    .hidden-by-search { display: none !important; }
-    .mobile-top {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background: rgba(8,14,29,.96);
-      border-bottom: 1px solid var(--line);
-      padding: 12px;
-      backdrop-filter: blur(10px);
-    }
-    .footer {
-      margin: 34px 0 8px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 13px;
-    }
-    @media (max-width: 950px) {
-      .app { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .mobile-top { display: block; }
-      .content { padding: 16px; }
-      .hero h1 { font-size: 28px; }
-      .two .card, .three .card { grid-column: span 12; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:radial-gradient(circle at top, rgba(215,255,63,.08), transparent 20%),linear-gradient(180deg,#05070b 0%,#0a1018 100%);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif}
+    body{min-height:100vh}
+    a{color:#b8e7ff}
+    .app{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+    .sidebar{background:rgba(7,11,18,.94);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+    .brand{font-size:20px;font-weight:900;letter-spacing:.02em;text-transform:uppercase}
+    .subbrand{margin-top:6px;color:var(--muted);font-size:13px}
+    .search{width:100%;margin:18px 0 10px;padding:13px 14px;border-radius:16px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none}
+    .search::placeholder{color:#7d8aa3}
+    .nav-title{margin:18px 8px 8px;color:#7785a1;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+    .main-link{width:100%;display:block;text-align:left;padding:12px 14px;border:0;background:transparent;color:#dfe7fb;border-radius:14px;margin:4px 0;font-size:15px;cursor:pointer}
+    .main-link:hover,.main-link.active{background:linear-gradient(180deg, rgba(215,255,63,.10), rgba(255,255,255,.02));border:1px solid rgba(215,255,63,.18)}
+    .content{padding:26px;max-width:1320px;width:100%;margin:0 auto}
+    .hero{border:1px solid #28344d;background:linear-gradient(90deg,rgba(0,0,0,.88) 0%, rgba(10,16,24,.76) 55%, rgba(10,16,24,.92) 100%), radial-gradient(circle at right, rgba(215,255,63,.18), transparent 25%);border-radius:28px;padding:28px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%, rgba(0,0,0,.24) 100%);pointer-events:none}
+    .hero h1{position:relative;z-index:1;margin:0;font-size:46px;line-height:1;text-transform:uppercase;letter-spacing:.02em}
+    .hero p{position:relative;z-index:1;max-width:840px;color:#d5def2;margin:14px 0 0;font-size:15px}
+    .chip-row{position:relative;z-index:1;display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+    .chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(215,255,63,.18);background:rgba(255,255,255,.04);font-size:12px;color:#eef3ff}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 22px}
+    .stat{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+    .stat .n{font-weight:900;font-size:26px;color:var(--accent)}
+    .panel{display:none;margin-top:18px}
+    .panel.active{display:block}
+    h2{font-size:32px;margin:0 0 8px}
+    .intro{color:var(--muted);margin:0 0 18px}
+    .subtabs,.objection-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+    .sub-link,.obj-link{padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;font-weight:700}
+    .sub-link.active,.obj-link.active{background:linear-gradient(180deg, rgba(215,255,63,.14), rgba(255,255,255,.03));border-color:rgba(215,255,63,.26);color:#fff}
+    .subpanel,.obj-panel{display:none}
+    .subpanel.active,.obj-panel.active{display:block}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .card{grid-column:span 12;background:linear-gradient(180deg,#0d131e 0%,#0a1018 100%);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+    .two .card{grid-column:span 6}
+    .three .card{grid-column:span 4}
+    .card h3{margin:0 0 10px;font-size:22px}
+    .card h4{margin:14px 0 8px;font-size:15px;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em}
+    .muted{color:var(--muted)}
+    ul,ol{margin:8px 0 0 20px;padding:0}
+    li{margin:6px 0}
+    .note,.example,.formula,.warn{margin-top:12px;padding:12px 14px;border-radius:16px;font-size:14px}
+    .note{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.18)}
+    .example{background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.18)}
+    .formula{background:rgba(215,255,63,.08);border:1px solid rgba(215,255,63,.18)}
+    .warn{background:rgba(251,113,133,.08);border:1px solid rgba(251,113,133,.18)}
+    .mini-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .mini-tag{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#d6e08b;border:1px solid rgba(215,255,63,.18);padding:5px 8px;border-radius:999px;background:rgba(215,255,63,.07)}
+    .materials .card a{display:inline-block;margin-top:10px;text-decoration:none;padding:10px 12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line)}
+    .footer{margin:30px 0 10px;text-align:center;color:var(--muted);font-size:13px}
+    .hidden-by-search{display:none !important}
+    .mobile-top{display:none;position:sticky;top:0;z-index:50;background:rgba(7,11,18,.95);padding:12px;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+    @media (max-width: 980px){
+      .app{grid-template-columns:1fr}
+      .sidebar{display:none}
+      .mobile-top{display:block}
+      .content{padding:16px}
+      .hero h1{font-size:34px}
+      .two .card,.three .card{grid-column:span 12}
+      .stats{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
@@ -223,54 +92,60 @@
       <div class="brand">Underground Fitness</div>
       <div class="subbrand">База знаний отдела продаж</div>
       <input id="desktopSearch" class="search" placeholder="Поиск по базе знаний..." />
-      <div class="menu-title">Разделы</div>
-      <div class="menu">
-        <button class="main-link active" data-main="home">Главная</button>
-        <button class="main-link" data-main="product">Продукт</button>
-        <button class="main-link" data-main="sales">Скелет продаж</button>
-        <button class="main-link" data-main="crm">CRM обучение</button>
-        <button class="main-link" data-main="objections">Частые возражения</button>
-        <button class="main-link" data-main="materials">Материалы</button>
-      </div>
+      <div class="nav-title">Разделы</div>
+      <button class="main-link active" data-main="home">Главная</button>
+      <button class="main-link" data-main="product">Продукт</button>
+      <button class="main-link" data-main="sales">Скелет продаж</button>
+      <button class="main-link" data-main="crm">CRM обучение</button>
+      <button class="main-link" data-main="objections">Частые возражения</button>
+      <button class="main-link" data-main="materials">Материалы</button>
     </aside>
 
     <main class="content">
-      <section id="home" class="panel active" data-search="главная база знаний менеджеры отдел продаж underground fitness">
-        <div class="hero" style="background:linear-gradient(90deg,#000000 0%,#0f172a 60%),url('https://undergroundgym.kz/wp-content/uploads/2023/08/underground-gym.jpg');background-size:cover;background-position:center;border:1px solid #1f2a44;">
-          <h1 style="font-size:40px;font-weight:900;letter-spacing:1px">UNDERGROUND FITNESS</h1>
-          <p style="font-size:16px;color:#c7d2fe;max-width:900px">Внутренняя база знаний для менеджеров отдела продаж. Здесь собрана вся информация о продукте, этапах консультации, работе в CRM и обработке возражений.</p>
-          <div class="chips">
+      <section id="home" class="panel active" data-search="главная underground fitness база знаний отдел продаж">
+        <div class="hero">
+          <h1>Underground Fitness</h1>
+          <p>Внутренняя база знаний для менеджеров отдела продаж. Здесь собрана информация о продукте, этапах консультации, работе в CRM BIG и обработке частых возражений. Интерфейс сделан как playbook: разделы, подвкладки, быстрый поиск.</p>
+          <div class="chip-row">
+            <div class="chip">Фитнес-стиль</div>
             <div class="chip">Продукт</div>
             <div class="chip">Скелет продаж</div>
-            <div class="chip">CRM обучение</div>
-            <div class="chip">Частые возражения</div>
-            <div class="chip">Красивый формат</div>
-            <div class="chip">Поиск</div>
-          </div>
-          <div class="stats">
-            <div class="stat"><div class="n">8</div><div class="muted">этапов консультации</div></div>
-            <div class="stat"><div class="n">3</div><div class="muted">касания минимум</div></div>
-            <div class="stat"><div class="n">5 мин</div><div class="muted">на принятие лида</div></div>
-            <div class="stat"><div class="n">15</div><div class="muted">полей при продаже</div></div>
+            <div class="chip">CRM BIG</div>
+            <div class="chip">Возражения</div>
           </div>
         </div>
-        <div class="card">
-          <h3>Что уже собрано из твоих файлов</h3>
-          <ul>
-            <li><strong>Скелет продаж</strong> — по презентации “Этапы консультации”.</li>
-            <li><strong>CRM обучение</strong> — по презентации “CRM BIG”.</li>
-            <li><strong>Частые возражения</strong> — по файлу с возражениями.</li>
-            <li><strong>Продукт</strong> — структура подготовлена под вкладки. Для точного наполнения именно “по презентации обучение ОП” нужен сам этот файл в репозитории.</li>
-          </ul>
-          <div class="warning">Я не вижу файл “обучение ОП” среди загруженных. Поэтому блок “Продукт” я оформил как правильную вкладочную структуру, но не заполнил его 1-в-1 по этой презентации.</div>
+        <div class="stats">
+          <div class="stat"><div class="n">11</div><div class="muted">филиалов в сети</div></div>
+          <div class="stat"><div class="n">10 000+</div><div class="muted">клиентов в месяц</div></div>
+          <div class="stat"><div class="n">170+</div><div class="muted">тренеров</div></div>
+          <div class="stat"><div class="n">2016</div><div class="muted">год основания</div></div>
+        </div>
+        <div class="grid two">
+          <div class="card">
+            <div class="mini-head"><h3>Что внутри сайта</h3><span class="mini-tag">playbook</span></div>
+            <ul>
+              <li><strong>Продукт</strong> — по методичке Underground GYM</li>
+              <li><strong>Скелет продаж</strong> — по презентации этапов консультации</li>
+              <li><strong>CRM обучение</strong> — по CRM BIG</li>
+              <li><strong>Частые возражения</strong> — в формате удобных вкладок</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="mini-head"><h3>Как пользоваться</h3><span class="mini-tag">быстро</span></div>
+            <ul>
+              <li>Слева выбирай основной раздел</li>
+              <li>Внутри раздела переключай подвкладки</li>
+              <li>Пиши в поиск: филиал, возражение, дежурный тренер, CRM</li>
+              <li>Используй сайт как живой справочник во время консультации</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="product" class="panel" data-search="продукт underground gym залы абонементы тренировки дежурный тренер групповые">
+      <section id="product" class="panel" data-search="продукт залы абонементы услуги дежурный тренер групповые underground gym">
         <h2>Продукт</h2>
-        <p class="intro">Основная информация о продукте Underground GYM. Этот раздел нужен менеджеру для презентации клуба клиенту.</p>
-
-        <div class="sub-tabs">
+        <p class="intro">Вся ключевая информация о продукте Underground GYM по методичке. Раздел оформлен подвкладками.</p>
+        <div class="subtabs">
           <button class="sub-link active" data-group="product" data-sub="halls">О залах</button>
           <button class="sub-link" data-group="product" data-sub="plans">Форматы абонементов</button>
           <button class="sub-link" data-group="product" data-sub="services">Формат тренировок</button>
@@ -278,22 +153,21 @@
           <button class="sub-link" data-group="product" data-sub="groups">Групповые занятия</button>
         </div>
 
-        <!-- О ЗАЛАХ -->
         <div id="product-halls" class="subpanel active">
           <div class="grid two">
             <div class="card">
-              <h3>О компании Underground GYM</h3>
+              <div class="mini-head"><h3>О компании Underground GYM</h3><span class="mini-tag">масштаб</span></div>
               <ul>
                 <li>Основан в 2016 году</li>
-                <li>11 филиалов</li>
-                <li>10 000+ клиентов в месяц</li>
-                <li>170+ тренеров</li>
+                <li>Первый зал: подвальное помещение 300 м², ул. Мустафина 3</li>
+                <li>Сегодня: 11 филиалов в Астане, Алматы и Костанае</li>
+                <li>10 000+ клиентов ежемесячно</li>
+                <li>170+ персональных тренеров</li>
               </ul>
-              <div class="note">Миссия компании: <strong>доступный фитнес для каждого</strong>.</div>
+              <div class="note">Миссия: <strong>доступный фитнес для каждого</strong>.</div>
             </div>
-
             <div class="card">
-              <h3>Форматы залов</h3>
+              <div class="mini-head"><h3>Форматы залов</h3><span class="mini-tag">gym / big</span></div>
               <h4>GYM формат</h4>
               <ul>
                 <li>Кардиозона</li>
@@ -305,13 +179,12 @@
               <ul>
                 <li>Всё из GYM формата</li>
                 <li>Функциональная зона / CrossFit</li>
-                <li>Боксерская зона с рингом</li>
+                <li>Боксерская зона с рингом (Нажимиденова)</li>
                 <li>Финская сауна</li>
               </ul>
             </div>
-
             <div class="card">
-              <h3>GYM филиалы — Серебряная карта</h3>
+              <div class="mini-head"><h3>GYM филиалы — Серебряная карта</h3><span class="mini-tag">7 залов</span></div>
               <ul>
                 <li>Сейфуллина 1</li>
                 <li>Тархана 17</li>
@@ -322,500 +195,316 @@
                 <li>Аль-Фараби 7/1</li>
               </ul>
             </div>
-
             <div class="card">
-              <h3>BIG филиалы — Золотая карта</h3>
+              <div class="mini-head"><h3>BIG филиалы — Золотая карта</h3><span class="mini-tag">4 зала</span></div>
               <ul>
                 <li>Нажимиденова 16</li>
                 <li>Майлина 6Б</li>
                 <li>Туран 60</li>
                 <li>Мухамедханова 25</li>
               </ul>
-              <div class="note">Золотая карта даёт доступ <strong>на все 11 филиалов</strong>, включая BIG залы и сауну.</div>
+              <div class="note">График: Пн–Сб по расписанию филиала. Воскресенье: 10:00–20:00.</div>
             </div>
-
             <div class="card">
-              <h3>Что говорить клиенту про залы</h3>
+              <div class="mini-head"><h3>Как презентовать залы клиенту</h3><span class="mini-tag">скрипт</span></div>
               <ul>
-                <li><strong>GYM</strong> — удобный и доступный формат для самостоятельных тренировок</li>
+                <li><strong>GYM</strong> — понятный, доступный формат для самостоятельных тренировок</li>
                 <li><strong>BIG</strong> — расширенный формат: больше зон, сауна, функциональный тренинг</li>
                 <li>Если клиенту важны комфорт, дополнительные зоны и сауна — презентуем BIG</li>
-                <li>Если клиенту важен понятный и доступный формат — презентуем GYM</li>
+                <li>Если нужен простой и доступный формат — презентуем GYM</li>
               </ul>
             </div>
-
             <div class="card">
-              <h3>Видеообзоры залов</h3>
-              <p class="muted">Пока без встроенных видео. Когда будут готовые ссылки или отдельные видео, добавим их прямо в карточки филиалов.</p>
-              <div class="note">Сейчас менеджер может использовать этот раздел как справочник по филиалам, форматам и адресам.</div>
+              <div class="mini-head"><h3>Видеообзоры залов</h3><span class="mini-tag">позже</span></div>
+              <p class="muted">Сюда добавим встроенные видео, когда будут готовые ссылки или отдельные файлы. Пока раздел работает как справочник по адресам и форматам.</p>
             </div>
           </div>
         </div>
 
         <div id="product-plans" class="subpanel">
           <div class="grid two">
-
             <div class="card">
-              <h3>Серебряная карта</h3>
+              <div class="mini-head"><h3>Серебряная карта</h3><span class="mini-tag">gym</span></div>
               <ul>
-                <li>Доступ к GYM филиалам</li>
-                <li>7 залов сети</li>
+                <li>Доступ на все GYM-филиалы</li>
+                <li>7 залов в сети</li>
                 <li>Самостоятельные тренировки</li>
-                <li>Срок: 6–12 месяцев</li>
+                <li>Срок: от 6 до 12 месяцев</li>
               </ul>
             </div>
-
             <div class="card">
-              <h3>Золотая карта</h3>
+              <div class="mini-head"><h3>Золотая карта</h3><span class="mini-tag">big+</span></div>
               <ul>
-                <li>Доступ ко всем 11 филиалам</li>
-                <li>BIG залы</li>
-                <li>Финская сауна</li>
-                <li>Срок: 6–12 месяцев</li>
+                <li>Доступ на все 11 филиалов</li>
+                <li>Включая BIG залы и сауну</li>
+                <li>Самостоятельные тренировки</li>
+                <li>Срок: от 6 до 12 месяцев</li>
               </ul>
             </div>
-
           </div>
         </div>
 
-
-        <!-- УСЛУГИ -->
         <div id="product-services" class="subpanel">
-
           <div class="grid two">
-
             <div class="card">
-              <h3>Персональные тренировки</h3>
-
+              <div class="mini-head"><h3>Персональные тренировки (ПТ)</h3><span class="mini-tag">индивидуально</span></div>
               <ul>
                 <li>Индивидуальный план тренировок</li>
-                <li>Контроль питания</li>
-                <li>Контроль техники</li>
-                <li>Регулярные замеры прогресса</li>
-                <li>Работа с травмами</li>
+                <li>Контроль питания и техники</li>
+                <li>Замеры и отчётность по прогрессу</li>
+                <li>Работа с травмами, ОДА, реабилитация</li>
+                <li>Обратная связь от тренера</li>
               </ul>
-
-              <div class="note">Оплата персонального тренера производится отдельно.</div>
-
+              <div class="note">Оплата тренеру отдельно.</div>
             </div>
-
             <div class="card">
-              <h3>Самостоятельные тренировки</h3>
-
+              <div class="mini-head"><h3>Самостоятельные тренировки</h3><span class="mini-tag">самост.</span></div>
               <ul>
                 <li>Клиент тренируется самостоятельно</li>
-                <li>Доступ ко всем зонам клуба</li>
-                <li>Можно использовать дежурного тренера для консультации</li>
+                <li>Доступ ко всем зонам клуба по карте</li>
+                <li>Можно использовать консультации дежурного тренера, если формат это включает</li>
               </ul>
-
             </div>
-
           </div>
-
         </div>
 
-
-        <!-- ДЕЖУРНЫЙ ТРЕНЕР -->
         <div id="product-duty" class="subpanel">
-
           <div class="card">
-
-            <h3>Как работает дежурный тренер</h3>
-
+            <div class="mini-head"><h3>Дежурный тренер (ДЖ)</h3><span class="mini-tag">включён в карту</span></div>
+            <p>Тренер консультативного характера. Находится в зале с открытия до закрытия.</p>
             <ul>
-              <li>Тренер находится в зале с открытия до закрытия</li>
-              <li>Консультирует клиентов</li>
-              <li>Помогает с техникой упражнений</li>
+              <li>Всегда в зале</li>
+              <li>Координирует клиентов</li>
+              <li>Помогает с техникой</li>
               <li>Отвечает на вопросы по тренировкам</li>
+              <li>Клиент сам подходит к тренеру</li>
             </ul>
-
-            <h4>Перерыв</h4>
-
-            <p>12:30 – 14:00</p>
-
-            <h4>Воскресенье</h4>
-
-            <p>Дежурный тренер не работает</p>
-
+            <h4>Расписание</h4>
+            <ul>
+              <li>Понедельник — Суббота: с открытия до закрытия</li>
+              <li>Обед: 12:30 — 14:00</li>
+              <li>Воскресенье: дежурный тренер не работает</li>
+            </ul>
           </div>
-
         </div>
 
-
-        <!-- ГРУППОВЫЕ -->
         <div id="product-groups" class="subpanel">
-
           <div class="grid two">
-
             <div class="card">
-              <h3>Виды групповых тренировок</h3>
-
+              <div class="mini-head"><h3>Виды групповых секций</h3><span class="mini-tag">расписание</span></div>
               <ul>
-                <li>Йога</li>
+                <li>Хатха-йога</li>
                 <li>Стретчинг</li>
                 <li>Power Train</li>
                 <li>Fitness Mix</li>
                 <li>Booty</li>
                 <li>Cardio</li>
               </ul>
-
             </div>
-
             <div class="card">
-
-              <h3>Правила посещения</h3>
-
+              <div class="mini-head"><h3>Правила посещения</h3><span class="mini-tag">важно</span></div>
               <ul>
-                <li>Запись через приложение</li>
-                <li>Запись заранее</li>
-                <li>Нельзя опаздывать</li>
-                <li>Опоздание — блок на 1 неделю</li>
-                <li>Повторное — блок на 2 недели</li>
+                <li>Запись заранее через приложение</li>
+                <li>Опаздывать запрещено</li>
+                <li>При опоздании — закрытие доступа на 1 неделю</li>
+                <li>При повторном опоздании — на 2 недели</li>
+                <li>Проводятся: Майлина 6Б и Мухамедханова 25</li>
               </ul>
-
-              <div class="note">Проводятся на филиалах Майлина 6Б и Мухамедханова 25.</div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
 
       <section id="sales" class="panel" data-search="скелет продаж этапы консультации установление контакта квалификация презентация закрытие возражения дожим предзакрытие эмоции кейсы">
         <h2>Скелет продаж</h2>
-        <p class="intro">Подробный разбор по презентации «Этапы консультации». Основа — 8 этапов, плавные переходы и работа не как по бумажке, а как живая консультация.</p>
-        <div class="grid">
-          <div class="card">
-            <h3>Этап 1 — Установление контакта</h3>
-            <h4>4 обязательных вопроса</h4>
-            <ol>
-              <li>Как меня зовут</li>
-              <li>Откуда я</li>
-              <li>Зачем звоню</li>
-              <li>Как зовут клиента</li>
-            </ol>
-            <div class="example">«Добрый день, меня зовут Арайлым, я менеджер Underground Gym. Как к вам обращаться?»</div>
-            <div class="warning">Неправильно: «Алло, вы звонили по абонементу? Ну, что вас интересует?»</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 2 — Вопросы и квалификация</h3>
-            <p>Цель этапа — получить максимум информации. Чем больше менеджер узнаёт, тем точнее презентация и выше шанс продажи.</p>
-            <h4>5 основных вопросов</h4>
-            <ol>
-              <li>Какой филиал интересует — ближе к дому или работе</li>
-              <li>Есть ли опыт тренировок — чем занимался и какие были результаты</li>
-              <li>Есть ли травмы или противопоказания</li>
-              <li>Какая цель и боль клиента — похудение, набор, поддержание формы</li>
-              <li>На что обращает внимание при выборе — цена, тренер, оборудование, расположение</li>
-            </ol>
-            <div class="note">Если клиент не хочет отвечать сразу, можно отправить прайс и мягко продолжить вопросы по ходу разговора.</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 3 — Презентация</h3>
-            <ul>
-              <li>Презентация строится только на ответах клиента</li>
-              <li>Показываем конкретный филиал под запрос</li>
-              <li>Рассказываем только про нужный формат: самост., ДЖ, ПТ</li>
-              <li>Цены начинаем с месяца и плавно переводим к акциям и выгодным пакетам</li>
-              <li>Не даём весь прайс подряд — подбираем один точный вариант</li>
-            </ul>
-            <div class="example">Кейс: «По акции Яндекс за стоимость 3 месяцев — 100 000 ₸ — дарим ещё 9 месяцев бесплатно. В рассрочку всего 8 333 ₸ в месяц».</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 4 — Закрытие</h3>
-            <p>После презентации менеджер должен задать прямой вопрос на покупку.</p>
-            <ul>
-              <li>«Берём?»</li>
-              <li>«Оформляем?»</li>
-              <li>«Подходят ли вам наши услуги?»</li>
-              <li>«Зафиксируем за вами абонемент?»</li>
-            </ul>
-            <div class="note">После вопроса закрытия — молчать. Дай клиенту ответить первым.</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 5 — Работа с возражениями</h3>
-            <p>Если консультация грамотная, возражений почти нет. Но если они появились — это не отказ, а запрос на другой аргумент.</p>
-            <ul>
-              <li>«Дорого» → переводим в рассрочку или в цену за месяц/тренировку</li>
-              <li>«Подумаю» → даём дедлайн и фиксируем предложение</li>
-              <li>«Против рассрочки» → предлагаем оплату сразу</li>
-              <li>«Нет времени» → показываем окна по графику</li>
-              <li>«Долгий срок» → объясняем заморозку и реальный срок результата</li>
-            </ul>
-          </div>
-
-          <div class="card">
-            <h3>Этап 6 — Дожим</h3>
-            <p>Не отпускаем клиента после первого «нет». Делаем 3 касания до конца.</p>
-            <ol>
-              <li>Касание 1 — в день обращения через 3–5 часов</li>
-              <li>Касание 2 — на следующий день утром или в обед</li>
-              <li>Касание 3 — через 2–3 дня, финальная попытка</li>
-            </ol>
-            <div class="example">«[Имя], что думаете? Зафиксируем? Условия действуют до конца дня».</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 7 — Предзакрытие</h3>
-            <ul>
-              <li>«Круто!»</li>
-              <li>«Прекрасно!»</li>
-              <li>«Замечательно!»</li>
-              <li>«Давайте я задам вам несколько вопросов»</li>
-              <li>«Подберём самый эффективный абонемент»</li>
-              <li>«И оформим его — хорошо?»</li>
-            </ul>
-            <div class="note">Предзакрытие = разогрев клиента до финального согласия.</div>
-          </div>
-
-          <div class="card">
-            <h3>Этап 8 — Эмоции и структура</h3>
-            <ul>
-              <li>Улыбка слышна в голосе</li>
-              <li>Темп должен быть живым, без монотонности</li>
-              <li>Тепло и искренность важнее сухого скрипта</li>
-              <li>Переходы между этапами должны быть логичными</li>
-            </ul>
-            <div class="example">Правильный переход: «Исходя из вашей цели — похудение — и того, что вы выбираете зал ближе к работе, я бы рекомендовал вот этот вариант...»</div>
-          </div>
-
-          <div class="card">
-            <h3>Лучшие кейсы</h3>
-            <ul>
-              <li><strong>Нурбол:</strong> сказал «нет денег» → 3 касания → рассрочка без первого платежа → продажа в 22:08</li>
-              <li><strong>Елизавета:</strong> не хотела год → предложили 6 месяцев → продажа 120 000 ₸</li>
-              <li><strong>Мадина:</strong> клиент ждала подругу → сделали оффер на двоих → 2 продажи</li>
-              <li><strong>Гумырбек:</strong> раскусил скрипт → честный ответ → пробное → вернулся через 4 дня</li>
-            </ul>
-          </div>
+        <p class="intro">Подробный разбор по презентации «Этапы консультации». Основа — 8 этапов, плавные переходы и живая консультация.</p>
+        <div class="grid two">
+          <div class="card"><h3>Этап 1 — Установление контакта</h3><ol><li>Как меня зовут</li><li>Откуда я</li><li>Зачем звоню</li><li>Как зовут клиента</li></ol><div class="example">«Добрый день, меня зовут Арайлым, я менеджер Underground Gym. Как к вам обращаться?»</div></div>
+          <div class="card"><h3>Этап 2 — Вопросы и квалификация</h3><ol><li>Филиал</li><li>Опыт тренировок</li><li>Противопоказания</li><li>Цель и боль клиента</li><li>Что важно при выборе</li></ol></div>
+          <div class="card"><h3>Этап 3 — Презентация</h3><ul><li>Только на основе ответов клиента</li><li>Подходящий филиал и формат</li><li>Цена с месяца</li><li>Переход к выгодному пакету</li></ul></div>
+          <div class="card"><h3>Этап 4 — Закрытие</h3><ul><li>«Берём?»</li><li>«Оформляем?»</li><li>«Зафиксируем?»</li></ul><div class="note">После вопроса закрытия — молчать.</div></div>
+          <div class="card"><h3>Этап 5 — Работа с возражениями</h3><p>Возражение — не отказ, а запрос на другой аргумент.</p></div>
+          <div class="card"><h3>Этап 6 — Дожим</h3><ol><li>Через 3–5 часов</li><li>На следующий день</li><li>Через 2–3 дня</li></ol></div>
+          <div class="card"><h3>Этап 7 — Предзакрытие</h3><ul><li>«Круто»</li><li>«Прекрасно»</li><li>«Замечательно»</li><li>«Подберём лучший вариант»</li></ul></div>
+          <div class="card"><h3>Этап 8 — Эмоции и структура</h3><ul><li>Улыбка в голосе</li><li>Живой темп</li><li>Тепло и уверенность</li><li>Плавные переходы</li></ul></div>
+          <div class="card" style="grid-column:span 12"><h3>Лучшие кейсы</h3><ul><li><strong>Нурбол:</strong> «нет денег» → 3 касания → рассрочка без первого платежа → продажа</li><li><strong>Елизавета:</strong> не хотела год → предложили 6 месяцев → продажа</li><li><strong>Мадина:</strong> оффер на двоих → 2 продажи</li><li><strong>Гумырбек:</strong> пробное → вернулся через 4 дня</li></ul></div>
         </div>
       </section>
 
       <section id="crm" class="panel" data-search="crm обучение big новая сделка автосделка воронка задача примечание касания поля чеклист">
         <h2>CRM обучение</h2>
-        <p class="intro">Раздел собран по презентации «CRM BIG — Обучение менеджера». Всё, что не зафиксировано в CRM, не считается выполненным.</p>
+        <p class="intro">Всё, что не зафиксировано в CRM, не считается выполненным.</p>
         <div class="grid two">
-          <div class="card">
-            <h3>Шаг 1 — Лид из таблицы</h3>
-            <ul>
-              <li>У тебя есть 5 минут на принятие лида</li>
-              <li>Сразу ставим КВАЛ или БРАК</li>
-              <li>Пишем примечание: кто клиент, откуда пришёл, контекст</li>
-              <li>Ставим статус «В работе»</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Шаг 2 — Новая сделка</h3>
-            <ul>
-              <li>Если номер не найден в CRM — создаём новую сделку</li>
-              <li>Добавляем номер телефона</li>
-              <li>Ставим статус «Новый лид»</li>
-              <li>Назначаем себя ответственным</li>
-              <li>Сразу ставим задачу</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Шаг 3 — Автосделка</h3>
-            <ul>
-              <li>Если клиент уже есть в базе — берём автосделку</li>
-              <li>Старые закрытые сделки не открываем и не редактируем</li>
-              <li>Если автосделки нет — создаём новую вручную</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Шаг 4 — Смена воронки</h3>
-            <ul>
-              <li>Если лид пришёл не из BIG — переводим в BIG</li>
-              <li>Сначала ставим «Новый лид»</li>
-              <li>Потом назначаем себя ответственным</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Шаг 5 — Постановка задачи</h3>
-            <ul>
-              <li>Сразу после взятия лида — задача обязательна</li>
-              <li>Дата и время следующего контакта</li>
-              <li>Тип задачи: звонок / WhatsApp / встреча</li>
-              <li>Комментарий: что обсудить с клиентом</li>
-            </ul>
-            <div class="warning">Нет задачи = потерянный клиент.</div>
-          </div>
-          <div class="card">
-            <h3>Шаг 6 — Примечание</h3>
-            <ul>
-              <li>Пишем результат каждого общения</li>
-              <li>Если писал с личного WhatsApp — прикрепляем скриншот</li>
-              <li>Пишем сразу после контакта</li>
-              <li>Примечание = история клиента</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Шаг 7 — 3 касания</h3>
-            <ol>
-              <li>Звонок клиенту</li>
-              <li>Сообщение в WhatsApp</li>
-              <li>Примечание в CRM</li>
-            </ol>
-            <div class="note">Без фиксации касание не считается.</div>
-          </div>
-          <div class="card">
-            <h3>Шаг 8 — Как звонить</h3>
-            <ul>
-              <li>Звонок через CRM</li>
-              <li>WhatsApp</li>
-              <li>Личный звонок</li>
-            </ul>
-            <div class="note">Звонок через CRM фиксируется автоматически.</div>
-          </div>
-          <div class="card">
-            <h3>Этапы воронки BIG</h3>
-            <ol>
-              <li>Новый лид</li>
-              <li>Не установлен контакт</li>
-              <li>Контакт установлен</li>
-              <li>Проконсультирован</li>
-              <li>Отработка</li>
-              <li>Приглашён</li>
-              <li>Был на филиале</li>
-              <li>Наработка</li>
-              <li>Счёт направлен</li>
-              <li>Предоплата получена</li>
-              <li>Успешно реализована</li>
-              <li>Отменён</li>
-            </ol>
-          </div>
-          <div class="card">
-            <h3>Обязательные поля при продаже</h3>
-            <ul>
-              <li>Ответственный</li>
-              <li>Бюджет</li>
-              <li>Валовая прибыль</li>
-              <li>Дата взятия в работу</li>
-              <li>Дата покупки</li>
-              <li>Дата окончания абонемента</li>
-              <li>Способ оплаты</li>
-              <li>Срок абонемента</li>
-              <li>Канал привлечения</li>
-              <li>Повторная или первичная покупка</li>
-              <li>Вид услуги</li>
-              <li>Тип услуги</li>
-              <li>Филиал</li>
-              <li>ФИО клиента</li>
-              <li>Телефон</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Чек-лист менеджера</h3>
-            <ul>
-              <li>Я перевёл сделку в BIG</li>
-              <li>Я поставил статус «Новый лид»</li>
-              <li>Я назначил себя ответственным</li>
-              <li>Я поставил задачу</li>
-              <li>Я сделал 3 касания</li>
-              <li>Я написал примечание</li>
-            </ul>
-          </div>
+          <div class="card"><h3>Шаг 1 — Лид из таблицы</h3><ul><li>5 минут на принятие</li><li>КВАЛ или БРАК</li><li>Примечание</li><li>Статус «В работе»</li></ul></div>
+          <div class="card"><h3>Шаг 2 — Новая сделка</h3><ul><li>Если номера нет — создаём сделку</li><li>Телефон</li><li>Статус «Новый лид»</li><li>Себя ответственным</li><li>Сразу задача</li></ul></div>
+          <div class="card"><h3>Шаг 3 — Автосделка</h3><ul><li>Если клиент уже был — берём автосделку</li><li>Старые закрытые сделки не трогаем</li></ul></div>
+          <div class="card"><h3>Шаг 4 — Смена воронки</h3><ul><li>Переводим в BIG</li><li>Сначала «Новый лид»</li><li>Потом ответственный</li></ul></div>
+          <div class="card"><h3>Шаг 5 — Постановка задачи</h3><ul><li>Дата и время</li><li>Тип: звонок / WhatsApp / встреча</li><li>Комментарий</li></ul><div class="warn">Нет задачи = потерянный клиент.</div></div>
+          <div class="card"><h3>Шаг 6 — Примечание</h3><ul><li>Результат каждого общения</li><li>Скриншоты переписки, если нужно</li><li>Писать сразу</li></ul></div>
+          <div class="card"><h3>Шаг 7 — 3 касания</h3><ol><li>Звонок</li><li>WhatsApp</li><li>Примечание</li></ol></div>
+          <div class="card"><h3>Шаг 8 — Как звонить</h3><ul><li>Через CRM</li><li>Через WhatsApp</li><li>Лично</li></ul></div>
+          <div class="card"><h3>Этапы воронки BIG</h3><ol><li>Новый лид</li><li>Не установлен контакт</li><li>Контакт установлен</li><li>Проконсультирован</li><li>Отработка</li><li>Приглашён</li><li>Был на филиале</li><li>Наработка</li><li>Счёт направлен</li><li>Предоплата получена</li><li>Успешно реализована</li><li>Отменён</li></ol></div>
+          <div class="card"><h3>Обязательные поля при продаже</h3><ul><li>Ответственный</li><li>Бюджет</li><li>Валовая прибыль</li><li>Дата покупки</li><li>Срок абонемента</li><li>Способ оплаты</li><li>Канал привлечения</li><li>Филиал</li><li>ФИО</li><li>Телефон</li></ul></div>
+          <div class="card" style="grid-column:span 12"><h3>Чек-лист менеджера</h3><ul><li>Сделка переведена в BIG</li><li>Статус «Новый лид»</li><li>Ответственный назначен</li><li>Задача поставлена</li><li>3 касания сделаны</li><li>Примечание написано</li></ul></div>
         </div>
       </section>
 
-      <section id="objections" class="panel" data-search="частые возражения дорого подумаю нет времени обсудить против рассрочки ленивый опыт тренировки">
+      <section id="objections" class="panel" data-search="частые возражения дорого подумаю нет времени обсудить против рассрочки сам решу месяц попробовать негативный опыт медицинские страхи ленивый">
         <h2>Частые возражения</h2>
-        <p class="intro">Скрипты ответов для менеджеров Underground Fitness.</p>
-        <div class="grid two">
+        <p class="intro">Раздел сделан как удобный playbook: слева тема возражения, справа — полный ответ менеджера.</p>
+        <div class="objection-tabs">
+          <button class="obj-link active" data-obj="rule">Правило 3Н</button>
+          <button class="obj-link" data-obj="expensive">Дорого</button>
+          <button class="obj-link" data-obj="think">Подумаю</button>
+          <button class="obj-link" data-obj="time">Нет времени</button>
+          <button class="obj-link" data-obj="discuss">Обсудить</button>
+          <button class="obj-link" data-obj="installment">Против рассрочки</button>
+          <button class="obj-link" data-obj="self">Сам решу</button>
+          <button class="obj-link" data-obj="month">На месяц</button>
+          <button class="obj-link" data-obj="badexp">Негативный опыт</button>
+          <button class="obj-link" data-obj="medical">Медицинские страхи</button>
+          <button class="obj-link" data-obj="lazy">Я ленивый</button>
+        </div>
 
-          <div class="card">
-            <h3>Правило 3Н</h3>
-            <ol>
-              <li>Присоединение</li>
-              <li>Нейтрализация</li>
-              <li>Новый аргумент</li>
-            </ol>
-            <div class=
+        <div id="obj-rule" class="obj-panel active card">
+          <h3>Правило 3Н</h3>
+          <ol>
+            <li><strong>Присоединение</strong> — не спорим, показываем, что услышали клиента</li>
+            <li><strong>Вопрос / Нейтрализация</strong> — выясняем настоящую причину</li>
+            <li><strong>Новый аргумент</strong> — даём последний сильный козырь</li>
+          </ol>
+          <div class="note">Любое возражение — не отказ, а просьба дать больше аргументов. После третьего «нет» клиента отпускаем тепло.</div>
+        </div>
 
-      <section id="materials" class="panel" data-search="материалы файлы презентации обучение crm этапы консультации возражения методичка">
+        <div id="obj-expensive" class="obj-panel card">
+          <h3>Возражение: «Дорого»</h3>
+          <div class="example">«Понимаю вас. А дорого — это сейчас неудобно по деньгам, или в целом кажется много за фитнес?»</div>
+          <div class="formula">100 000 ₸ в год = 8 500 ₸ в месяц = около 700 ₸ за тренировку</div>
+          <p>Сначала переводим цену в понятную математику, потом показываем ценность и только затем предлагаем рассрочку.</p>
+        </div>
+
+        <div id="obj-think" class="obj-panel card">
+          <h3>Возражение: «Я подумаю»</h3>
+          <div class="example">«Конечно. Подскажите, что именно хотите обдумать?»</div>
+          <p>Главная задача — не отпускать клиента в пустоту. Сначала выяснить настоящую причину, затем дать повод прийти на пробную или зафиксировать предложение на короткий срок.</p>
+        </div>
+
+        <div id="obj-time" class="obj-panel card">
+          <h3>Возражение: «Нет времени»</h3>
+          <div class="example">«Понимаю. А в какое время вам обычно чуть свободнее — утром или вечером?»</div>
+          <p>Не говорим клиенту «нужно найти время». Помогаем найти реальное окно. Тренировка длится 45–50 минут.</p>
+        </div>
+
+        <div id="obj-discuss" class="obj-panel card">
+          <h3>Возражение: «Нужно обсудить с мужем / женой / кем-то»</h3>
+          <div class="example">«Хорошо, я отправлю вам всю информацию в WhatsApp, чтобы не пришлось пересказывать: условия, что входит и стоимость.»</div>
+          <p>Если есть шанс прийти вдвоём — используем это как плюс и мягко переводим к совместному визиту.</p>
+        </div>
+
+        <div id="obj-installment" class="obj-panel card">
+          <h3>Возражение: «Против рассрочки»</h3>
+          <div class="example">«Хорошо, без проблем. Тогда оформим оплату сразу — картой, наличными или переводом.»</div>
+          <p>Не спорим с отношением к рассрочке. Просто убираем инструмент и двигаемся дальше к оплате.</p>
+        </div>
+
+        <div id="obj-self" class="obj-panel card">
+          <h3>Возражение: «Я сам решу / сам напишу»</h3>
+          <div class="example">«Хорошо, не вопрос. Я скину вам контакт и кратко продублирую условия, чтобы вы могли вернуться к ним в удобное время.»</div>
+          <p>Задача — не давить, а оставить открытый контакт и мягкий повод вернуться.</p>
+        </div>
+
+        <div id="obj-month" class="obj-panel card">
+          <h3>Возражение: «Хочу попробовать на месяц»</h3>
+          <div class="example">«Месяц можно оформить, но честно скажу: за месяц тело только адаптируется. Обычно видимый результат начинается позже.»</div>
+          <p>Месяц — это вход, а не срок результата. Мягко переводим к 3–6 месяцам как более рабочему сроку.</p>
+        </div>
+
+        <div id="obj-badexp" class="obj-panel card">
+          <h3>Возражение: «У меня был плохой опыт»</h3>
+          <ul>
+            <li>Зал был переполнен → предлагаем прийти и посмотреть нужный временной слот</li>
+            <li>Тренеры не уделяли внимания → объясняем роль дежурного тренера и ПТ</li>
+            <li>Купил и не ходил → объясняем, что раньше не было системы и сопровождения</li>
+          </ul>
+          <div class="example">«Понимаю вас. Поэтому и предлагаю не покупать вслепую — приходите на пробную тренировку и сами посмотрите.»</div>
+        </div>
+
+        <div id="obj-medical" class="obj-panel card">
+          <h3>Возражение: «Есть страхи по здоровью / спине / коленям»</h3>
+          <div class="example">«Сначала врач — это правильно. После врачебных рекомендаций тренер подберёт программу под ограничения.»</div>
+          <p>Здесь важно не давить, а договориться о follow-up после посещения врача.</p>
+        </div>
+
+        <div id="obj-lazy" class="obj-panel card">
+          <h3>Возражение: «Я ленивый, не буду ходить»</h3>
+          <div class="example">«Тогда не надо сразу брать абонемент. Давайте начнём с одной бесплатной тренировки.»</div>
+          <p>Задача — снизить барьер входа и убрать страх обязательств.</p>
+        </div>
+      </section>
+
+      <section id="materials" class="panel materials" data-search="материалы файлы презентации обучение crm этапы консультации возражения методичка">
         <h2>Материалы</h2>
         <div class="grid two">
-          <div class="card attach">
-            <h3>Методичка Underground GYM</h3>
-            <a href="Методичка_Underground_GYM.pptx" target="_blank">Открыть файл</a>
-          </div>
-          <div class="card attach">
-            <h3>CRM BIG — Обучение</h3>
-            <a href="CRM_BIG_Обучение.pptx" target="_blank">Открыть файл</a>
-          </div>
-          <div class="card attach">
-            <h3>Этапы консультации</h3>
-            <a href="Этапы_консультации_Underground_GYM.pptx" target="_blank">Открыть файл</a>
-          </div>
-          <div class="card attach">
-            <h3>Возражения</h3>
-            <p class="muted">Файл с возражениями загружен в чат и используется для наполнения сайта.</p>
-          </div>
+          <div class="card"><h3>Методичка Underground GYM</h3><a href="Методичка_Underground_GYM.pptx" target="_blank">Открыть файл</a></div>
+          <div class="card"><h3>CRM BIG — Обучение</h3><a href="CRM_BIG_Обучение.pptx" target="_blank">Открыть файл</a></div>
+          <div class="card"><h3>Этапы консультации</h3><a href="Этапы_консультации_Underground_GYM.pptx" target="_blank">Открыть файл</a></div>
+          <div class="card"><h3>Возражения</h3><p class="muted">Используются для наполнения сайта.</p></div>
         </div>
       </section>
 
-      <div class="footer">Underground Fitness © Внутреннее использование</div>
+      <div class="footer">Underground Fitness © внутреннее использование</div>
     </main>
   </div>
 
   <script>
-    const mainLinks = [...document.querySelectorAll('.main-link')];
-    const panels = [...document.querySelectorAll('.panel')];
-    const subLinks = [...document.querySelectorAll('.sub-link')];
-    const subPanels = [...document.querySelectorAll('.subpanel')];
-    const desktopSearch = document.getElementById('desktopSearch');
-    const mobileSearch = document.getElementById('mobileSearch');
+    const mainLinks=[...document.querySelectorAll('.main-link')];
+    const panels=[...document.querySelectorAll('.panel')];
+    const subLinks=[...document.querySelectorAll('.sub-link')];
+    const subPanels=[...document.querySelectorAll('.subpanel')];
+    const objLinks=[...document.querySelectorAll('.obj-link')];
+    const objPanels=[...document.querySelectorAll('.obj-panel')];
+    const desktopSearch=document.getElementById('desktopSearch');
+    const mobileSearch=document.getElementById('mobileSearch');
 
-    function openMain(id) {
-      panels.forEach(p => p.classList.remove('active'));
-      mainLinks.forEach(b => b.classList.remove('active'));
+    function openMain(id){
+      panels.forEach(p=>p.classList.remove('active'));
+      mainLinks.forEach(b=>b.classList.remove('active'));
       document.getElementById(id)?.classList.add('active');
       document.querySelector(`.main-link[data-main="${id}"]`)?.classList.add('active');
     }
-
-    function openSub(group, sub) {
-      document.querySelectorAll(`.sub-link[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
-      document.querySelectorAll(`#${group} .subpanel`).forEach(p => p.classList.remove('active'));
+    function openSub(group,sub){
+      document.querySelectorAll(`.sub-link[data-group="${group}"]`).forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll(`#${group} .subpanel`).forEach(p=>p.classList.remove('active'));
       document.querySelector(`.sub-link[data-group="${group}"][data-sub="${sub}"]`)?.classList.add('active');
       document.getElementById(`${group}-${sub}`)?.classList.add('active');
     }
-
-    mainLinks.forEach(btn => btn.addEventListener('click', () => openMain(btn.dataset.main)));
-    subLinks.forEach(btn => btn.addEventListener('click', () => openSub(btn.dataset.group, btn.dataset.sub)));
-
-    function runSearch(value) {
-      const q = value.trim().toLowerCase();
-      if (!q) {
-        panels.forEach(p => p.classList.remove('hidden-by-search'));
-        return;
-      }
-      let firstMatch = null;
-      panels.forEach(panel => {
-        const text = (panel.innerText + ' ' + (panel.dataset.search || '')).toLowerCase();
-        const ok = text.includes(q);
-        panel.classList.toggle('hidden-by-search', !ok);
-        if (ok && !firstMatch) firstMatch = panel.id;
-      });
-      if (firstMatch) openMain(firstMatch);
+    function openObj(id){
+      objLinks.forEach(b=>b.classList.remove('active'));
+      objPanels.forEach(p=>p.classList.remove('active'));
+      document.querySelector(`.obj-link[data-obj="${id}"]`)?.classList.add('active');
+      document.getElementById(`obj-${id}`)?.classList.add('active');
     }
+    mainLinks.forEach(btn=>btn.addEventListener('click',()=>openMain(btn.dataset.main)));
+    subLinks.forEach(btn=>btn.addEventListener('click',()=>openSub(btn.dataset.group,btn.dataset.sub)));
+    objLinks.forEach(btn=>btn.addEventListener('click',()=>openObj(btn.dataset.obj)));
 
-    desktopSearch?.addEventListener('input', e => {
-      mobileSearch.value = e.target.value;
-      runSearch(e.target.value);
-    });
-    mobileSearch?.addEventListener('input', e => {
-      desktopSearch.value = e.target.value;
-      runSearch(e.target.value);
-    });
-
+    function runSearch(value){
+      const q=value.trim().toLowerCase();
+      if(!q){panels.forEach(p=>p.classList.remove('hidden-by-search'));return}
+      let first=null;
+      panels.forEach(panel=>{
+        const text=(panel.innerText+' '+(panel.dataset.search||'')).toLowerCase();
+        const ok=text.includes(q);
+        panel.classList.toggle('hidden-by-search',!ok);
+        if(ok && !first) first=panel.id;
+      });
+      if(first) openMain(first);
+    }
+    desktopSearch?.addEventListener('input',e=>{mobileSearch.value=e.target.value;runSearch(e.target.value)});
+    mobileSearch?.addEventListener('input',e=>{desktopSearch.value=e.target.value;runSearch(e.target.value)});
     openMain('home');
-    openSub('product', 'halls');
+    openSub('product','halls');
+    openObj('rule');
   </script>
 </body>
 </html>
