@@ -1,170 +1,593 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Underground Fitness — База знаний ОП</title>
-<style>
-body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#0f172a;color:#e2e8f0}
-header{background:#020617;padding:20px 30px;border-bottom:1px solid #1e293b}
-h1{margin:0;font-size:24px}
-.container{display:flex}
-nav{width:260px;background:#020617;border-right:1px solid #1e293b;height:100vh;position:sticky;top:0;padding:20px}
-nav a{display:block;color:#cbd5f5;text-decoration:none;margin:10px 0;padding:8px;border-radius:6px}
-nav a:hover{background:#1e293b}
-main{flex:1;padding:40px;max-width:900px}
-section{margin-bottom:60px}
-h2{color:#38bdf8}
-h3{color:#a5f3fc}
-.card{background:#020617;border:1px solid #1e293b;border-radius:10px;padding:18px;margin:15px 0}
-.code{background:#020617;border:1px solid #334155;padding:10px;border-radius:6px;margin-top:8px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Underground Fitness — База знаний ОП</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #11182d;
+      --panel-2: #0f172a;
+      --text: #e5eefc;
+      --muted: #9fb0d0;
+      --line: #22304f;
+      --accent: #7dd3fc;
+      --accent-2: #22c55e;
+      --chip: #16213d;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: #0a1120;
+      border-right: 1px solid var(--line);
+      padding: 20px 16px;
+    }
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+    .search {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      margin-bottom: 16px;
+    }
+    .search::placeholder { color: #89a0c8; }
+    .nav-title {
+      color: #7f93ba;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin: 16px 8px 8px;
+    }
+    .nav a {
+      display: block;
+      text-decoration: none;
+      color: #d7e4fb;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+    .nav a:hover, .nav a.active { background: var(--panel); }
+    .content {
+      padding: 28px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .hero {
+      background: linear-gradient(180deg, rgba(125,211,252,.12), rgba(34,197,94,.06));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 760px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .chip {
+      background: var(--chip);
+      border: 1px solid var(--line);
+      color: #d7e4fb;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+    section {
+      margin: 28px 0 18px;
+      scroll-margin-top: 20px;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 28px;
+    }
+    .section-intro {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    .card {
+      grid-column: span 12;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+    .card h4 {
+      margin: 14px 0 8px;
+      font-size: 16px;
+      color: var(--accent);
+    }
+    .muted { color: var(--muted); }
+    .two-col .card { grid-column: span 6; }
+    .three-col .card { grid-column: span 4; }
+    ul, ol { margin: 8px 0 0 20px; }
+    li { margin: 6px 0; }
+    .example, .note, .formula {
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .example { background: rgba(125,211,252,.08); border: 1px solid rgba(125,211,252,.18); }
+    .note { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.18); }
+    .formula { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.18); }
+    .kpi {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .kpi .box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .kpi .num { font-size: 24px; font-weight: 800; }
+    .hidden { display: none !important; }
+    .footer {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 36px 0 8px;
+      text-align: center;
+    }
+    .mobile-top {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,16,32,.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .mobile-top { display: block; }
+      .content { padding: 16px; }
+      .hero h1 { font-size: 26px; }
+      .two-col .card, .three-col .card { grid-column: span 12; }
+      .kpi { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
-<header>
-<h1>Underground Fitness — База знаний отдела продаж</h1>
-</header>
-<div class="container">
-<nav>
-<strong>Разделы</strong>
-<a href="#product">1. Продукт</a>
-<a href="#sales">2. Скелет продаж</a>
-<a href="#crm">3. CRM система</a>
-<a href="#objections">4. Возражения</a>
-</nav>
-<main>
-<section id="product">
-<h2>1. Продукт</h2>
-<p>Менеджер должен понимать, что именно он продаёт.</p>
-<div class="card">
-<h3>Услуги клуба</h3>
-<ul>
-<li>Тренажёрный зал</li>
-<li>Персональные тренировки</li>
-<li>Групповые тренировки</li>
-<li>Самостоятельные занятия</li>
-</ul>
-</div>
-<div class="card">
-<h3>Форматы абонементов</h3>
-<ul>
-<li>1 месяц</li>
-<li>3 месяца</li>
-<li>6 месяцев</li>
-<li>12 месяцев</li>
-</ul>
-</div>
-<div class="card">
-<h3>Основные преимущества</h3>
-<ul>
-<li>Современное оборудование</li>
-<li>Сильные тренеры</li>
-<li>Удобное расположение</li>
-<li>Акции и рассрочка</li>
-<li>Бесплатная первая тренировка</li>
-</ul>
-</div>
-</section>
-<section id="sales">
-<h2>2. Скелет продаж</h2>
-<div class="card">
-<h3>Этап 1 — Установление контакта</h3>
-<div class="code">Добрый день! Меня зовут Арайлым, менеджер Underground Gym. Как к вам обращаться?</div>
-</div>
-<div class="card">
-<h3>Этап 2 — Квалификация</h3>
-<ul>
-<li>Какой филиал интересует</li>
-<li>Есть ли опыт тренировок</li>
-<li>Есть ли противопоказания</li>
-<li>Какая цель</li>
-<li>Что важно при выборе</li>
-</ul>
-</div>
-<div class="card">
-<h3>Этап 3 — Презентация</h3>
-<p>Презентация строится на ответах клиента.</p>
-</div>
-<div class="card">
-<h3>Этап 4 — Закрытие</h3>
-<div class="code">Берём?</div>
-<div class="code">Оформляем?</div>
-</div>
-<div class="card">
-<h3>Этап 5 — Работа с возражениями</h3>
-<p>Каждое возражение — запрос на дополнительный аргумент.</p>
-</div>
-<div class="card">
-<h3>Этап 6 — Дожим</h3>
-<p>Минимум 3 касания.</p>
-</div>
-<div class="card">
-<h3>Этап 7 — Предзакрытие</h3>
-<p>Используем фразы согласия.</p>
-</div>
-<div class="card">
-<h3>Этап 8 — Эмоции</h3>
-<p>Улыбка в голосе и уверенность.</p>
-</div>
-</section>
-<section id="crm">
-<h2>3. CRM система</h2>
-<div class="card">
-<h3>Шаг 1 — принять лид</h3>
-<p>Есть 5 минут на принятие лида.</p>
-</div>
-<div class="card">
-<h3>Шаг 2 — новая сделка</h3>
-<div class="code">+ Новая сделка</div>
-</div>
-<div class="card">
-<h3>3 касания</h3>
-<ul>
-<li>Звонок</li>
-<li>WhatsApp</li>
-<li>Примечание</li>
-</ul>
-</div>
-<div class="card">
-<h3>Этапы воронки</h3>
-<ul>
-<li>Новый лид</li>
-<li>Контакт установлен</li>
-<li>Проконсультирован</li>
-<li>Приглашён</li>
-<li>Счёт направлен</li>
-<li>Успешно реализована</li>
-</ul>
-</div>
-</section>
-<section id="objections">
-<h2>4. Возражения</h2>
-<div class="card">
-<h3>Правило 3Н</h3>
-<ul>
-<li>Присоединение</li>
-<li>Вопрос</li>
-<li>Аргумент</li>
-</ul>
-</div>
-<div class="card">
-<h3>Дорого</h3>
-<div class="code">100 000 в год = 8 500 в месяц</div>
-</div>
-<div class="card">
-<h3>Подумаю</h3>
-<div class="code">Что именно хотите обдумать?</div>
-</div>
-<div class="card">
-<h3>Нет времени</h3>
-<div class="code">Тренировка 45–50 минут</div>
-</div>
-<div class="card">
-<h3>Хочу обсудить</h3>
-<div class="code">Отправлю информацию в WhatsApp</div>
-</div>
-</section>
-</main>
-</div>
+  <div class="mobile-top">
+    <input id="mobileSearch" class="search" placeholder="Поиск по базе знаний..." />
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">Underground Fitness</div>
+      <div class="subtitle">База знаний отдела продаж</div>
+      <input id="searchInput" class="search" placeholder="Поиск по базе знаний..." />
+
+      <div class="nav-title">Разделы</div>
+      <nav class="nav">
+        <a href="#home">Главная</a>
+        <a href="#product">Продукт</a>
+        <a href="#sales">Скелет продаж</a>
+        <a href="#crm">CRM система</a>
+        <a href="#objections">Возражения</a>
+        <a href="#attachments">Материалы</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section id="home" data-search="главная база знаний менеджеры отдел продаж underground fitness">
+        <div class="hero">
+          <h1>База знаний отдела продаж</h1>
+          <p>Внутренний сайт для менеджеров Underground Fitness. Здесь собраны продукт, скелет продажи, инструкция по CRM и отработка возражений. Сайт рассчитан на работу с телефона и компьютера.</p>
+          <div class="chips">
+            <div class="chip">Продукт</div>
+            <div class="chip">Этапы консультации</div>
+            <div class="chip">CRM BIG</div>
+            <div class="chip">Возражения</div>
+            <div class="chip">Поиск по базе</div>
+          </div>
+          <div class="kpi">
+            <div class="box"><div class="num">8</div><div class="muted">этапов консультации</div></div>
+            <div class="box"><div class="num">3</div><div class="muted">обязательных касания</div></div>
+            <div class="box"><div class="num">5 мин</div><div class="muted">на принятие лида</div></div>
+            <div class="box"><div class="num">15</div><div class="muted">полей при продаже</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="product" data-search="продукт услуги абонементы преимущества underground fitness менеджер продает">
+        <h2>1. Продукт</h2>
+        <div class="section-intro">Что именно продаёт менеджер. Раздел нужен, чтобы менеджер говорил не только про цену, но и про ценность клуба.</div>
+        <div class="grid two-col">
+          <article class="card">
+            <h3>Услуги клуба</h3>
+            <ul>
+              <li>Тренажёрный зал</li>
+              <li>Самостоятельные тренировки</li>
+              <li>Персональный тренер</li>
+              <li>Групповые тренировки</li>
+            </ul>
+            <div class="note">Продукт нужно объяснять через задачу клиента: похудение, набор массы, поддержание формы, дисциплина, удобный график.</div>
+          </article>
+          <article class="card">
+            <h3>Форматы абонементов</h3>
+            <ul>
+              <li>1 месяц</li>
+              <li>3 месяца</li>
+              <li>6 месяцев</li>
+              <li>12 месяцев</li>
+            </ul>
+            <div class="note">В продаже начинаем с короткого периода, дальше переводим к выгодным пакетам и акциям.</div>
+          </article>
+          <article class="card">
+            <h3>Что продавать в первую очередь</h3>
+            <ul>
+              <li>Не цену, а результат</li>
+              <li>Не список услуг, а подходящий формат</li>
+              <li>Не абонемент, а решение под цель клиента</li>
+            </ul>
+            <div class="example"><strong>Пример:</strong> “С учётом вашей цели и графика вам подойдёт формат с вечерними тренировками и более длинный пакет, чтобы увидеть реальный результат, а не просто попробовать.”</div>
+          </article>
+          <article class="card">
+            <h3>Преимущества клуба</h3>
+            <ul>
+              <li>Современное оборудование</li>
+              <li>Сильный тренерский состав</li>
+              <li>Удобное расположение</li>
+              <li>Рассрочка и акции</li>
+              <li>Бесплатная тренировка как точка входа</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="sales" data-search="этапы консультации скелет продаж контакт квалификация презентация закрытие дожим предзакрытие эмоции">
+        <h2>2. Скелет продаж</h2>
+        <div class="section-intro">Продажа строится по 8 этапам. Главное — плавный переход из этапа в этап, а не сплошной поток информации.</div>
+        <div class="grid">
+          <article class="card" data-search="этап 1 установление контакта имя клуб филиал как зовут клиента зачем звоню">
+            <h3>Этап 1 — Установление контакта</h3>
+            <ul>
+              <li>Представься по имени</li>
+              <li>Назови клуб и филиал</li>
+              <li>Кратко скажи, зачем звонишь</li>
+              <li>Узнай имя клиента и используй его</li>
+            </ul>
+            <div class="example"><strong>Пример:</strong> “Добрый день, меня зовут Арайлым, я менеджер Underground Gym. Как к вам обращаться?”</div>
+          </article>
+
+          <article class="card" data-search="этап 2 вопросы квалификация филиал опыт тренировки противопоказания цель цена тренер оборудование">
+            <h3>Этап 2 — Вопросы и квалификация</h3>
+            <h4>5 основных вопросов</h4>
+            <ol>
+              <li>Какой филиал интересует</li>
+              <li>Есть ли опыт тренировок</li>
+              <li>Есть ли травмы или противопоказания</li>
+              <li>Какая цель и боль клиента</li>
+              <li>На что обращает внимание при выборе</li>
+            </ol>
+            <div class="note">Чем больше узнаёшь, тем точнее презентация и выше шанс закрытия.</div>
+          </article>
+
+          <article class="card" data-search="этап 3 презентация филиал услуги цены месяц акция подбор абонемента">
+            <h3>Этап 3 — Презентация</h3>
+            <ul>
+              <li>Строится только на ответах клиента</li>
+              <li>Показывай только то, что важно именно ему</li>
+              <li>Цены начинай с месяца, потом переводи к акциям и выгодным пакетам</li>
+              <li>Не перечисляй всё подряд</li>
+            </ul>
+            <div class="example"><strong>Пример:</strong> “Исходя из вашей цели и графика, вам подойдёт этот вариант. По акции за стоимость 3 месяцев мы даём ещё 9 месяцев бесплатно.”</div>
+          </article>
+
+          <article class="card" data-search="этап 4 закрытие берем оформляем зафиксируем вопрос на покупку">
+            <h3>Этап 4 — Закрытие</h3>
+            <ul>
+              <li>После презентации обязательно задавай вопрос на покупку</li>
+              <li>Не оставляй клиента в подвешенном состоянии</li>
+            </ul>
+            <div class="example"><strong>Фразы:</strong> “Берём?”, “Оформляем?”, “Зафиксируем за вами?”</div>
+            <div class="note">После вопроса закрытия — молчи. Клиент должен ответить первым.</div>
+          </article>
+
+          <article class="card" data-search="этап 5 возражения дорого подумаю нет времени рассрочка">
+            <h3>Этап 5 — Работа с возражениями</h3>
+            <p>Возражение — это не отказ. Это запрос на другой аргумент.</p>
+            <ul>
+              <li>Дорого → считаем выгоду</li>
+              <li>Подумаю → выясняем что именно</li>
+              <li>Нет времени → ищем конкретное окно</li>
+              <li>Против рассрочки → убираем рассрочку, предлагаем оплату сразу</li>
+            </ul>
+          </article>
+
+          <article class="card" data-search="этап 6 дожим три касания follow up вацап звонок">
+            <h3>Этап 6 — Дожим</h3>
+            <h4>3 касания до конца</h4>
+            <ol>
+              <li>В день обращения через 3–5 часов</li>
+              <li>На следующий день</li>
+              <li>Через 2–3 дня финальная попытка</li>
+            </ol>
+            <div class="example"><strong>Пример:</strong> “[Имя], что думаете? Зафиксируем? Условия действуют до конца дня.”</div>
+          </article>
+
+          <article class="card" data-search="этап 7 предзакрытие круто прекрасно подберем оформим">
+            <h3>Этап 7 — Предзакрытие</h3>
+            <ul>
+              <li>Круто</li>
+              <li>Прекрасно</li>
+              <li>Давайте подберём самый эффективный вариант</li>
+              <li>И оформим его — хорошо?</li>
+            </ul>
+            <div class="note">Предзакрытие разогревает клиента до финального согласия.</div>
+          </article>
+
+          <article class="card" data-search="этап 8 эмоции структура улыбка голос уверенность">
+            <h3>Этап 8 — Эмоции и структура</h3>
+            <ul>
+              <li>Улыбка слышна в голосе</li>
+              <li>Говори живо, не монотонно</li>
+              <li>Будь тёплым и уверенным</li>
+              <li>Переходи логично между этапами</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="crm" data-search="crm big воронка лид статус задача примечание касания сделка оплата поля">
+        <h2>3. CRM система</h2>
+        <div class="section-intro">Пошаговая инструкция по воронке BIG. Всё, что не зафиксировано в CRM, не считается сделанным.</div>
+        <div class="grid two-col">
+          <article class="card" data-search="шаг 1 лид из таблицы 5 минут квал брак в работе">
+            <h3>Шаг 1 — Принять лид</h3>
+            <ul>
+              <li>На принятие лида есть 5 минут</li>
+              <li>Сразу поставить КВАЛ или БРАК</li>
+              <li>Написать примечание</li>
+              <li>Поставить статус “В работе”</li>
+            </ul>
+          </article>
+          <article class="card" data-search="шаг 2 новая сделка автосделка номер статус новый лид ответственный">
+            <h3>Шаг 2 — Новая сделка или автосделка</h3>
+            <ul>
+              <li>Если номера нет в CRM — создаём новую сделку</li>
+              <li>Если клиент уже был — берём автосделку</li>
+              <li>Старые закрытые сделки не трогаем</li>
+              <li>Сразу ставим статус “Новый лид” и назначаем себя ответственным</li>
+            </ul>
+          </article>
+          <article class="card" data-search="шаг 3 смена воронки big ответственный">
+            <h3>Шаг 3 — Перевод в воронку BIG</h3>
+            <ul>
+              <li>Открыть сделку</li>
+              <li>Найти поле “Воронка”</li>
+              <li>Выбрать BIG</li>
+              <li>Поставить статус “Новый лид”</li>
+              <li>Назначить себя ответственным</li>
+            </ul>
+          </article>
+          <article class="card" data-search="шаг 4 задача дата время тип звонок whatsapp комментарий">
+            <h3>Шаг 4 — Поставить задачу</h3>
+            <ul>
+              <li>Дата и время следующего контакта</li>
+              <li>Тип задачи: звонок / WhatsApp / встреча</li>
+              <li>Комментарий: что обсудить с клиентом</li>
+            </ul>
+            <div class="note">Нет задачи = потерянный клиент.</div>
+          </article>
+          <article class="card" data-search="шаг 5 примечание история клиента скриншот переписки">
+            <h3>Шаг 5 — Примечание</h3>
+            <ul>
+              <li>Фиксируй результат каждого общения</li>
+              <li>Если писал с личного WhatsApp — прикрепляй скриншот</li>
+              <li>Пиши сразу после контакта</li>
+            </ul>
+          </article>
+          <article class="card" data-search="шаг 6 три касания звонок whatsapp примечание">
+            <h3>Шаг 6 — 3 обязательных касания</h3>
+            <ol>
+              <li>Звонок клиенту</li>
+              <li>Сообщение в WhatsApp</li>
+              <li>Примечание в CRM</li>
+            </ol>
+            <div class="note">Без фиксации касание не считается.</div>
+          </article>
+          <article class="card" data-search="этапы воронки новый лид не установлен контакт контакт установлен проконсультирован отработка приглашен был на филиале наработка счет направлен предоплата успешно реализована отменен">
+            <h3>Этапы воронки BIG</h3>
+            <ol>
+              <li>Новый лид</li>
+              <li>Не установлен контакт</li>
+              <li>Контакт установлен</li>
+              <li>Проконсультирован</li>
+              <li>Отработка</li>
+              <li>Приглашён</li>
+              <li>Был на филиале</li>
+              <li>Наработка</li>
+              <li>Счёт направлен</li>
+              <li>Предоплата получена</li>
+              <li>Успешно реализована</li>
+              <li>Отменён</li>
+            </ol>
+          </article>
+          <article class="card" data-search="обязательные поля фио телефон филиал сумма дата покупки срок абонемента способ оплаты канал привлечения вид услуги тип услуги">
+            <h3>Обязательные поля при продаже</h3>
+            <ul>
+              <li>ФИО клиента</li>
+              <li>Телефон</li>
+              <li>Филиал</li>
+              <li>Бюджет</li>
+              <li>Дата покупки</li>
+              <li>Срок абонемента</li>
+              <li>Способ оплаты</li>
+              <li>Канал привлечения</li>
+              <li>Вид услуги и тип услуги</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="objections" data-search="возражения дорого подумаю нет времени обсудить муж жена рассрочка лень месяц попробовать врач спина переполненность">
+        <h2>4. Возражения</h2>
+        <div class="section-intro">Базовый принцип — правило 3Н: присоединение, вопрос или аргумент, последний козырь. После третьего “нет” отпускаем тепло.</div>
+        <div class="grid three-col">
+          <article class="card" data-search="дорого дорого как ответить цена математика 8500 700 тенге">
+            <h3>Дорого</h3>
+            <div class="formula">100 000 ₸ в год = 8 500 ₸ в месяц ≈ 700 ₸ за тренировку</div>
+            <div class="example">“А дорого — это сейчас неудобно по деньгам, или в целом кажется много за фитнес?”</div>
+          </article>
+          <article class="card" data-search="подумаю что именно хотите обдумать акция до пятницы">
+            <h3>Подумаю</h3>
+            <div class="example">“Что именно хотите обдумать? Давайте сразу закроем вопросы.”</div>
+            <div class="note">Сначала даём причину прийти, потом дедлайн акции.</div>
+          </article>
+          <article class="card" data-search="нет времени 45 50 минут три раза в неделю">
+            <h3>Нет времени</h3>
+            <div class="example">“У нас тренировка 45–50 минут. Три раза в неделю. Это реально вписать.”</div>
+          </article>
+          <article class="card" data-search="обсудить с мужем женой отправлю в whatsapp">
+            <h3>Хочу обсудить с кем-то</h3>
+            <div class="example">“Я отправлю всю информацию в WhatsApp, чтобы не пришлось пересказывать.”</div>
+          </article>
+          <article class="card" data-search="против рассрочки можно оплатить сразу">
+            <h3>Против рассрочки</h3>
+            <div class="example">“Хорошо, тогда оформим оплату сразу — картой, наличными или переводом.”</div>
+          </article>
+          <article class="card" data-search="сам решу сам напишу">
+            <h3>Сам решу, сам напишу</h3>
+            <div class="example">“Хорошо, скину контакт в WhatsApp. Если будет удобно — напишете.”</div>
+          </article>
+          <article class="card" data-search="на месяц попробовать адаптация 3 4 недели">
+            <h3>На месяц попробовать</h3>
+            <div class="example">“За месяц тело только адаптируется. Чтобы увидеть изменения, нужен больший срок.”</div>
+          </article>
+          <article class="card" data-search="был плохой опыт зал переполнен тренеры не подходили">
+            <h3>Негативный опыт</h3>
+            <div class="example">“Слышу вас. Давайте придёте на бесплатную тренировку и сами посмотрите, как сейчас.”</div>
+          </article>
+          <article class="card" data-search="медицинские страхи спина врач">
+            <h3>Медицинские страхи</h3>
+            <div class="example">“Сначала врач, потом тренер под ограничения. Давайте я напомню через неделю.”</div>
+          </article>
+          <article class="card" data-search="ленивый не буду ходить">
+            <h3>Я ленивый, не буду ходить</h3>
+            <div class="example">“Не надо сразу брать абонемент. Приходите на одну бесплатную тренировку.”</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="attachments" data-search="материалы презентации pptx crm обучение этапы консультации файлы">
+        <h2>Материалы</h2>
+        <div class="section-intro">Исходные файлы в репозитории. Можно открыть или скачать при необходимости.</div>
+        <div class="grid two-col">
+          <article class="card">
+            <h3>CRM BIG — Обучение</h3>
+            <p class="muted">Файл с инструкцией по CRM и воронке BIG.</p>
+            <p><a href="CRM_BIG_Обучение.pptx" target="_blank">Открыть файл</a></p>
+          </article>
+          <article class="card">
+            <h3>Этапы консультации</h3>
+            <p class="muted">Презентация по 8 этапам консультации менеджера.</p>
+            <p><a href="Этапы_консультации_Underground_GYM.pptx" target="_blank">Открыть файл</a></p>
+          </article>
+        </div>
+      </section>
+
+      <div class="footer">Underground Fitness © Внутреннее использование</div>
+    </main>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const mobileSearch = document.getElementById('mobileSearch');
+    const sections = [...document.querySelectorAll('section')];
+    const navLinks = [...document.querySelectorAll('.nav a')];
+
+    function runSearch(value) {
+      const query = value.trim().toLowerCase();
+      sections.forEach(section => {
+        const text = (section.innerText + ' ' + (section.dataset.search || '')).toLowerCase();
+        section.classList.toggle('hidden', query && !text.includes(query));
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', e => {
+        runSearch(e.target.value);
+        if (mobileSearch) mobileSearch.value = e.target.value;
+      });
+    }
+
+    if (mobileSearch) {
+      mobileSearch.addEventListener('input', e => {
+        runSearch(e.target.value);
+        if (searchInput) searchInput.value = e.target.value;
+      });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const current = document.querySelector(`.nav a[href="#${entry.target.id}"]`);
+          if (current) current.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0.1 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
 </body>
 </html>
