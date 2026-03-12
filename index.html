@@ -1306,10 +1306,12 @@
     let firebaseFns={};
 
     document.addEventListener('keydown',(e)=>{
-      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){
-        firebaseAdmin.style.display=firebaseAdmin.style.display==='none' || !firebaseAdmin.style.display ? 'block':'none';
-      }
-    });
+if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){
+firebaseAdmin.style.display='block';
+loginBox.style.display='grid';
+editorBox.style.display='none';
+}
+});
 
     async function initFirebaseShared(){
       try{
