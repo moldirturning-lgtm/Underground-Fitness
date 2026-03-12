@@ -1321,14 +1321,14 @@ editorBox.style.display='none';
           import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js')
         ]);
 
-        const firebaseConfig={
-          apiKey:'PASTE_YOUR_API_KEY',
-          authDomain:'PASTE_YOUR_AUTH_DOMAIN',
-          projectId:'underground-fitness-academy',
-          storageBucket:'PASTE_YOUR_STORAGE_BUCKET',
-          messagingSenderId:'PASTE_YOUR_MESSAGING_SENDER_ID',
-          appId:'PASTE_YOUR_APP_ID'
-        };
+      const firebaseConfig = {
+apiKey: "AIzaSyCpRQC5TAbqt1hXkmoJDL_52aEp5teRzRE",
+authDomain: "underground-fitness-academy.firebaseapp.com",
+projectId: "underground-fitness-academy",
+storageBucket: "underground-fitness-academy.firebasestorage.app",
+messagingSenderId: "483203024867",
+appId: "1:483203024867:web:b6a59abb7c5e62414442d6"
+};
 
         if(Object.values(firebaseConfig).some(v=>String(v).startsWith('PASTE_YOUR'))){
           firebaseStatus.textContent='Вставь свои firebaseConfig данные в коде сайта.';
