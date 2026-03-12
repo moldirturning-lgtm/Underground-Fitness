@@ -1305,13 +1305,26 @@
     let dbRef=null;
     let firebaseFns={};
 
-    document.addEventListener('keydown',(e)=>{
-if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='a'){
-firebaseAdmin.style.display='block';
-loginBox.style.display='grid';
-editorBox.style.display='none';
-}
+   const adminOpenBtn = document.createElement('button');
+adminOpenBtn.textContent = 'Админ';
+adminOpenBtn.style.position = 'fixed';
+adminOpenBtn.style.left = '16px';
+adminOpenBtn.style.bottom = '16px';
+adminOpenBtn.style.zIndex = '99999';
+adminOpenBtn.style.padding = '12px 14px';
+adminOpenBtn.style.border = 'none';
+adminOpenBtn.style.borderRadius = '14px';
+adminOpenBtn.style.background = '#d8ff47';
+adminOpenBtn.style.color = '#111';
+adminOpenBtn.style.fontWeight = '900';
+adminOpenBtn.style.cursor = 'pointer';
+adminOpenBtn.style.boxShadow = '0 18px 40px rgba(0,0,0,.28)';
+
+adminOpenBtn.addEventListener('click', () => {
+  firebaseAdmin.style.display = firebaseAdmin.style.display === 'block' ? 'none' : 'block';
 });
+
+document.body.appendChild(adminOpenBtn);
 
     async function initFirebaseShared(){
       try{
